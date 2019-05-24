@@ -38,10 +38,10 @@ enum Opcoes {
 	
 // traduz valor do comando para uso dentro do switch
 Opcoes resolveOp(string comando) {
-	if(comando.find("first") != std::string::npos) return Op1;
-	if(comando.find("circular") != std::string::npos) return Op2;
-	if(comando.find("best") != std::string::npos) return Op3;
-	if(comando.find("worst") != std::string::npos) return Op4;
+	if(comando.find("first") != string::npos) return Op1;
+	if(comando.find("circular") != string::npos) return Op2;
+	if(comando.find("best") != string::npos) return Op3;
+	if(comando.find("worst") != string::npos) return Op4;
 	return Op_Invalida;
 }
 
