@@ -47,14 +47,13 @@ Opcoes resolveOp(string comando) {
 
 // cria matriz principal
 void criaMatriz(){
-
 	int i, j;
 	
-		for(i=0; i < NLIN; i++) {     
-			for(j=0; j < NCOL; j++) {    
-				Matriz[i][j] = 0;
-			}
-		}						
+	for(i=0; i < NLIN; i++) {     
+		for(j=0; j < NCOL; j++) {    
+			Matriz[i][j] = 0;
+		}
+	}						
 };
 
 // exibe matriz na tela
@@ -63,21 +62,20 @@ void exibeMatriz(){
 	
 	system("clear");
 		
-		for(i=0; i < NLIN; i++) {     
-			for(j=0; j < NCOL; j++) {   
-				cout << Matriz[i][j];
-			}
-			cout<<endl;
-		}		
+	for(i=0; i < NLIN; i++) {     
+		for(j=0; j < NCOL; j++) {   
+			cout << Matriz[i][j];
+		}
+		cout<<endl;
+	}		
 };
 
 // legenda com a descricao dos processos criados
 void legenda(int pid, int tamanho, int tempoExec) {
-		 cout << pid << "\n";
-		 cout << tamanho << "\n";
-		 cout << tempoExec << "\n";
-		 cout << "----------------------------\n";
-	
+	cout << pid << "\n";
+	cout << tamanho << "\n";
+	cout << tempoExec << "\n";
+	cout << "----------------------------\n";	
 };
 
 // inicio
@@ -159,8 +157,6 @@ int main(int argc, char *argv[ ]) {
 		default:
 			cout << "Argumentos inválidos!" "!\n";
 		}
-		
-
-		
+						
 	return 0;
 };
