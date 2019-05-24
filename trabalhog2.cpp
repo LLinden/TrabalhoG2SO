@@ -68,8 +68,7 @@ void exibeMatriz(){
 				cout << Matriz[i][j];
 			}
 			cout<<endl;
-		}	
-	
+		}		
 };
 
 // legenda com a descricao dos processos criados
@@ -122,7 +121,7 @@ int main(int argc, char *argv[ ]) {
 			}
 			sleep(2);
 			
-			//teste < AQUI VAI O ALGORITMO
+			//teste < AQUI VAI O ALGORITMO - TA CAGADO
 			for(int i = 0; i < NLIN; i++) {     
 				for(int j = 0; j < NCOL; j++) {					
 					if ((Matriz[i][j] == 0) && (Matriz[i][j] < processo->tamanho)) {
