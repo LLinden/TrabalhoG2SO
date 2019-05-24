@@ -1,6 +1,6 @@
 /******************************************************************************
 Trabalho G2 - Sistemas Operacionais
-Author: Lucas Di Franco Linden - Cod. 1110139
+Author: Lucas Linden - Cod. 1110139
 *******************************************************************************/
 #include <iostream>
 #include <string>
