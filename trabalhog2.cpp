@@ -81,7 +81,7 @@ void legenda(int pid, int tamanho, int tempoExec) {
 // inicio
 int main(int argc, char *argv[ ]) {
 	// variaveis locais
-	int count = 0, pos = 0;
+	int count = 0, pos;
 	// reseta o seed pro rand
 	srand(time(0));	
 	
@@ -120,7 +120,7 @@ int main(int argc, char *argv[ ]) {
 			sleep(2);
 			
 
-			//teste 
+			// teste < AQUI A ALOCACAO PROPRIAMENTE DITA
 			for (int numeroProcesso = 0; numeroProcesso < nProc ; numeroProcesso ++){ 
 				Processo processoAtual = processo[numeroProcesso];
 				//
