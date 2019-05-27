@@ -81,7 +81,7 @@ void legenda(int pid, int tamanho, int tempoExec) {
 // inicio
 int main(int argc, char *argv[ ]) {
 	// variaveis locais
-	int count = 0;
+	int count = 0, pos = 0;
 	// reseta o seed pro rand
 	srand(time(0));	
 	
@@ -119,17 +119,23 @@ int main(int argc, char *argv[ ]) {
 			}
 			sleep(2);
 			
-			//teste < AQUI VAI O ALGORITMO - TA CAGADO
-			for(int i = 0; i < NLIN; i++) {     
-				for(int j = 0; j < NCOL; j++) {
-					for(int k = 0; k < processo[k].tamanho; k++) {			
-						if ((Matriz[i][j] == 0) && (k < processo[k].tamanho)) {
-							Matriz[i][j] = processo[k].pid;
-							//sleep(tempo);
-						}	
-					}
-				}		 
-			} 
+
+			//teste 
+			for (int numeroProcesso = 0; numeroProcesso < nProc ; numeroProcesso ++){ 
+				Processo processoAtual = processo[numeroProcesso];
+				//
+				pos = 0;
+				for (int intTamanho = 0; intTamanho < processoAtual.tamanho; intTamanho++){
+				  for(int l = 0; l < NLIN; l++) {   
+					for(int c = 0; c < NCOL; c++) {
+					  if (Matriz[l][c] == 0 && pos < processoAtual.tamanho){
+						pos++;
+						Matriz[l][c] = processoAtual.pid;
+					  }
+					}          
+				  }
+				}        
+			  }
 			
 			system("clear");
 			exibeMatriz();			
