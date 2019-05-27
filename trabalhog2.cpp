@@ -123,19 +123,18 @@ int main(int argc, char *argv[ ]) {
 			// teste < AQUI A ALOCACAO PROPRIAMENTE DITA
 			for (int numeroProcesso = 0; numeroProcesso < nProc ; numeroProcesso ++){ 
 				Processo processoAtual = processo[numeroProcesso];
-				//
 				pos = 0;
 				for (int intTamanho = 0; intTamanho < processoAtual.tamanho; intTamanho++){
-				  for(int l = 0; l < NLIN; l++) {   
-					for(int c = 0; c < NCOL; c++) {
-					  if (Matriz[l][c] == 0 && pos < processoAtual.tamanho){
-						pos++;
-						Matriz[l][c] = processoAtual.pid;
-					  }
-					}          
-				  }
+					for(int l = 0; l < NLIN; l++) {   
+						for(int c = 0; c < NCOL; c++) {
+							if (Matriz[l][c] == 0 && pos < processoAtual.tamanho){
+							pos++;
+							Matriz[l][c] = processoAtual.pid;
+							}
+						}          
+					}
 				}        
-			  }
+			}
 			
 			system("clear");
 			exibeMatriz();			
