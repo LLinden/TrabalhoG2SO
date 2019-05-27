@@ -121,10 +121,12 @@ int main(int argc, char *argv[ ]) {
 			
 			//teste < AQUI VAI O ALGORITMO - TA CAGADO
 			for(int i = 0; i < NLIN; i++) {     
-				for(int j = 0; j < NCOL; j++) {					
-					if ((Matriz[i][j] == 0) && (Matriz[i][j] < processo->tamanho)) {
-						Matriz[i][j] = processo[i].pid;
-						//sleep(tempo);
+				for(int j = 0; j < NCOL; j++) {
+					for(int k = 0; k < processo[k].tamanho; k++) {			
+						if ((Matriz[i][j] == 0) && (k < processo[k].tamanho)) {
+							Matriz[i][j] = processo[k].pid;
+							//sleep(tempo);
+						}	
 					}
 				}		 
 			} 
