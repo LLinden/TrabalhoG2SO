@@ -128,8 +128,8 @@ int main(int argc, char *argv[ ]) {
 					for(int l = 0; l < NLIN; l++) {   
 						for(int c = 0; c < NCOL; c++) {
 							if (Matriz[l][c] == 0 && pos < processoAtual.tamanho){
-							pos++;
-							Matriz[l][c] = processoAtual.pid;
+								pos++;
+								Matriz[l][c] = processoAtual.pid;
 							}
 						}          
 					}
