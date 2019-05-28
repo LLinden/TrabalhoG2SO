@@ -124,8 +124,7 @@ int main(int argc, char *argv[ ]) {
 			}
 			sleep(2);
 			
-
-			// teste < AQUI A ALOCACAO PROPRIAMENTE DITA
+			// aqui a alocação propriamente dita
 			for (int numeroProcesso = 0; numeroProcesso < nProc ; numeroProcesso ++){ 
 				Processo processoAtual = processo[numeroProcesso];
 				pos = 0;
