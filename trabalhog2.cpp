@@ -69,13 +69,13 @@ void exibeMatriz(){
 		for(j=0; j < NCOL; j++) {   
 			cout << Matriz[i][j];
 		}
-		cout<<endl;
+		cout << endl;
 	}		
 };
 
 // cabecalho tabela legenda
 void tituloLegenda() {
-	cout << "\nPID:\t\tSIMBOLO\t\tTAMANHO\t\tTEMP.EXEC.\t\t\n";
+	cout << "\nPID\t\tSIMBOLO\t\tTAMANHO\t\tTEMP.EXEC.\t\t\n";
 };
 
 // tabela legenda com a descricao dos processos criados
@@ -125,6 +125,7 @@ int main(int argc, char *argv[ ]) {
 				legenda(processo[i].pid, processo[i].simbolo, processo[i].tamanho, processo[i].tempoExec);
 			}
 			sleep(2);
+
 			
 			// aqui a alocação propriamente dita
 			for (int numeroProcesso = 0; numeroProcesso < nProc ; numeroProcesso ++){ 
