@@ -73,13 +73,14 @@ void exibeMatriz(){
 	}		
 };
 
-// legenda com a descricao dos processos criados
+// cabecalho tabela legenda
+void tituloLegenda() {
+	cout << "\nPID:\t\tSIMBOLO\t\tTAMANHO\t\tTEMP.EXEC.\t\t\n";
+};
+
+// tabela legenda com a descricao dos processos criados
 void legenda(int pid, char simbolo, int tamanho, int tempoExec) {
-	cout << "PID: " << pid << "\n";
-	cout << "SIMBOLO: " << simbolo << "\n";
-	cout << "TAMANHO: " << tamanho << "\n";
-	cout << "TEMP. EXEC.: " << tempoExec << "\n";
-	cout << "----------------------------\n";	
+	cout << pid << "\t\t" << simbolo << "\t\t" << tamanho << "\t\t" << tempoExec << "\n";
 };
 
 // inicio
@@ -119,6 +120,7 @@ int main(int argc, char *argv[ ]) {
 			// imprime interface
 			exibeMatriz();
 			// chama legenda para os n processos criados
+			tituloLegenda();
 			for(int i = 0; i < nProc; i++) {
 				legenda(processo[i].pid, processo[i].simbolo, processo[i].tamanho, processo[i].tempoExec);
 			}
@@ -143,6 +145,7 @@ int main(int argc, char *argv[ ]) {
 			system("clear");
 			exibeMatriz();			
 			// chama legenda para os n processos criados
+			tituloLegenda();
 			for(int i = 0; i < nProc; i++) {
 				legenda(processo[i].pid, processo[i].simbolo, processo[i].tamanho, processo[i].tempoExec);
 			}
