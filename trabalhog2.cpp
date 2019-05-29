@@ -100,10 +100,7 @@ Processo* construtorProc() {
 };
 
 // first-fit
-void firstFit(Processo *processo) {
-	
-	//Processo *processo = construtorProc();
-	
+void firstFit(Processo *processo) {	
 	// aqui a alocação propriamente dita
 		for (int numeroProcesso = 0; numeroProcesso < nProc ; numeroProcesso++){ 
 			Processo processoAtual = processo[numeroProcesso];
