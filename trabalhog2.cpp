@@ -27,7 +27,8 @@ class Processo {
 		int pid;   
 		int tamanho; 
 		int tempoExec;
-		char simbolo;	
+		char simbolo;
+		int tempoRest;	
 };
 
 // opcoes de comando
@@ -75,18 +76,18 @@ void exibeMatriz(){
 
 // cabecalho tabela legenda
 void tituloLegenda() {
-	cout << "\nPID\t\tSIMBOLO\t\tTAMANHO\t\tTEMP.EXEC.\t\t\n";
+	cout << "\nPID\t\tSIMBOLO\t\tTAMANHO\t\tTEMP.EXEC.\tTEMP.REST.\n";
 };
 
 // tabela legenda com a descricao dos processos criados
-void legenda(int pid, char simbolo, int tamanho, int tempoExec) {
-	cout << pid << "\t\t" << simbolo << "\t\t" << tamanho << "\t\t" << tempoExec << "\n";
+void legenda(int pid, char simbolo, int tamanho, int tempoExec, int tempoRest) {
+	cout << pid << "\t\t" << simbolo << "\t\t" << tamanho << "\t\t" << tempoExec << "\t\t" << tempoRest << "\n";
 };
 
 // inicio
 int main(int argc, char *argv[ ]) {
 	// variaveis locais
-	int count = 0, pos;
+	int count = 0, pos, cron;
 	// reseta o seed pro rand
 	srand(time(0));	
 	
@@ -110,6 +111,7 @@ int main(int argc, char *argv[ ]) {
 		 processo[i].tamanho = rand() % 900 + 100;
 		 processo[i].tempoExec = rand() % 300 + 1;
 		 processo[i].simbolo = dicionario[i];
+		 processo[i].tempoRest = processo[i].tempoExec;
 	}
 	
 	// seleciona algoritmo a ser executado
@@ -122,13 +124,13 @@ int main(int argc, char *argv[ ]) {
 			// chama legenda para os n processos criados
 			tituloLegenda();
 			for(int i = 0; i < nProc; i++) {
-				legenda(processo[i].pid, processo[i].simbolo, processo[i].tamanho, processo[i].tempoExec);
+				legenda(processo[i].pid, processo[i].simbolo, processo[i].tamanho, processo[i].tempoExec, processo[i].tempoRest);
 			}
 			sleep(2);
 
 			
 			// aqui a alocação propriamente dita
-			for (int numeroProcesso = 0; numeroProcesso < nProc ; numeroProcesso ++){ 
+			for (int numeroProcesso = 0; numeroProcesso < nProc ; numeroProcesso++){ 
 				Processo processoAtual = processo[numeroProcesso];
 				pos = 0;
 				for (int intTamanho = 0; intTamanho < processoAtual.tamanho; intTamanho++){
@@ -144,11 +146,27 @@ int main(int argc, char *argv[ ]) {
 			}
 			
 			system("clear");
-			exibeMatriz();			
+			exibeMatriz();
+			
+			// TESTE TEMP EXEC
+			while (cron != 0) {
+				for (int numeroProcesso = 0; numeroProcesso < nProc ; numeroProcesso ++){
+					Processo processoAtual = processo[numeroProcesso];
+					cron = processoAtual.tempoExec - 1;
+					processoAtual.tempoExec = cron;
+					
+					// chama legenda para os n processos criados
+					tituloLegenda();
+					for(int i = 0; i < nProc; i++) {
+						legenda(processo[i].pid, processo[i].simbolo, processo[i].tamanho, processo[i].tempoExec, processo[i].tempoRest);
+					}
+				}
+			}			
+						
 			// chama legenda para os n processos criados
 			tituloLegenda();
 			for(int i = 0; i < nProc; i++) {
-				legenda(processo[i].pid, processo[i].simbolo, processo[i].tamanho, processo[i].tempoExec);
+				legenda(processo[i].pid, processo[i].simbolo, processo[i].tamanho, processo[i].tempoExec, processo[i].tempoRest);
 			}
 		
 			break;
