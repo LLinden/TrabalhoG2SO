@@ -87,7 +87,7 @@ void legenda(int pid, char simbolo, int tamanho, int tempoExec, int tempoRest) {
 // inicio
 int main(int argc, char *argv[ ]) {
 	// variaveis locais
-	int count = 0, pos, cron;
+	int count = 0, pos, cron = 1;
 	// reseta o seed pro rand
 	srand(time(0));	
 	
@@ -149,17 +149,19 @@ int main(int argc, char *argv[ ]) {
 			exibeMatriz();
 			
 			// TESTE TEMP EXEC
-			while (cron != 0) {
-				for (int numeroProcesso = 0; numeroProcesso < nProc ; numeroProcesso ++){
-					Processo processoAtual = processo[numeroProcesso];
-					cron = processoAtual.tempoExec - 1;
-					processoAtual.tempoExec = cron;
+			while (true) {
+				for (int i = 0; i < nProc ; i++){
+					cron = processo[i].tempoExec - 1;
+					processo[i].tempoRest = cron;
 					
 					// chama legenda para os n processos criados
+					exibeMatriz();
 					tituloLegenda();
 					for(int i = 0; i < nProc; i++) {
 						legenda(processo[i].pid, processo[i].simbolo, processo[i].tamanho, processo[i].tempoExec, processo[i].tempoRest);
 					}
+					cout << flush;
+					sleep(1);
 				}
 			}			
 						
