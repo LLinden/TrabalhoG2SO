@@ -16,7 +16,7 @@ Author: Lucas Linden - Cod. 1110139
 using namespace std;
 
 // variaveis globais
-int nProc, tempo = 0;
+int nProc, tempo = 0, count = 0, pos, cron = 1;
 char Matriz[NLIN][NCOL];
 char dicionario[] = {'A','B','C','D','E','F','G','H','I','J','K','L','M',
 					'N','O','P','Q','R','S','T','U','V','X','Y','W','Z'};
@@ -34,10 +34,10 @@ class Processo {
 // opcoes de comando
 enum Opcoes {
 	Op_Invalida,
-    Op1,
-    Op2,
-    Op3,
-    Op4,
+	Op1,
+	Op2,
+	Op3,
+	Op4,
 };
 	
 // traduz valor do comando para uso dentro do switch
@@ -84,26 +84,9 @@ void legenda(int pid, char simbolo, int tamanho, int tempoExec, int tempoRest) {
 	cout << pid << "\t\t" << simbolo << "\t\t" << tamanho << "\t\t" << tempoExec << "\t\t" << tempoRest << "\n";
 };
 
-// inicio
-int main(int argc, char *argv[ ]) {
-	// variaveis locais
-	int count = 0, pos, cron = 1;
-	// reseta o seed pro rand
-	srand(time(0));	
-	
-	// trata argumentos passados via linha de comando
-	string comando = argv[1];
-	resolveOp(comando);	
-	nProc = atoi(argv[2]);
-	// arumento tempo e opcional
-	if (argv[3] != NULL) tempo = atoi(argv[3]);	
-	
-	// inicializa matriz
-	criaMatriz();
-	
-	// constroi processos
+// constroi processos
+Processo* construtorProc() {	
 	Processo *processo = new Processo[nProc];
-	
 	// instancia n processos (quantidade definida em nProc)
 	for(int i = 0; i < nProc; i++) {	
 		 count = count + 1;
@@ -113,6 +96,68 @@ int main(int argc, char *argv[ ]) {
 		 processo[i].simbolo = dicionario[i];
 		 processo[i].tempoRest = processo[i].tempoExec;
 	}
+	return processo;	
+};
+
+// first-fit
+void firstFit(Processo *processo) {
+	
+	//Processo *processo = construtorProc();
+	
+	// aqui a alocação propriamente dita
+		for (int numeroProcesso = 0; numeroProcesso < nProc ; numeroProcesso++){ 
+			Processo processoAtual = processo[numeroProcesso];
+			pos = 0;
+			for (int intTamanho = 0; intTamanho < processoAtual.tamanho; intTamanho++){
+				for(int l = 0; l < NLIN; l++) {   
+					for(int c = 0; c < NCOL; c++) {
+						if (Matriz[l][c] == '.' && pos < processoAtual.tamanho){
+							pos++;
+							Matriz[l][c] = processoAtual.simbolo;
+						}
+					}          
+				}
+			}        
+		}
+			
+		system("clear");
+		exibeMatriz();
+			
+		// TESTE TEMP EXEC
+		while (true) {
+			for (int i = 0; i < nProc ; i++){
+				cron = processo[i].tempoExec - 1;
+				processo[i].tempoRest = cron;
+					
+				// chama legenda para os n processos criados
+				exibeMatriz();
+				tituloLegenda();
+				for(int i = 0; i < nProc; i++) {
+					legenda(processo[i].pid, processo[i].simbolo, processo[i].tamanho, processo[i].tempoExec, processo[i].tempoRest);
+				}
+				cout << flush;
+				sleep(1);
+			}
+		}
+};
+
+// inicio
+int main(int argc, char *argv[ ]) {
+	// reseta o seed
+	srand(time(0));
+	
+	// trata argumentos passados via linha de comando
+	string comando = argv[1];
+	resolveOp(comando);	
+	nProc = atoi(argv[2]);
+	// arumento tempo opcional
+	if (argv[3] != NULL) tempo = atoi(argv[3]);	
+		
+	// inicializa os processos
+	Processo *processo = construtorProc();
+	
+	// inicializa matriz
+	criaMatriz();		
 	
 	// seleciona algoritmo a ser executado
 	switch (resolveOp(comando)) {
@@ -127,45 +172,9 @@ int main(int argc, char *argv[ ]) {
 				legenda(processo[i].pid, processo[i].simbolo, processo[i].tamanho, processo[i].tempoExec, processo[i].tempoRest);
 			}
 			sleep(2);
-
-			
-			// aqui a alocação propriamente dita
-			for (int numeroProcesso = 0; numeroProcesso < nProc ; numeroProcesso++){ 
-				Processo processoAtual = processo[numeroProcesso];
-				pos = 0;
-				for (int intTamanho = 0; intTamanho < processoAtual.tamanho; intTamanho++){
-					for(int l = 0; l < NLIN; l++) {   
-						for(int c = 0; c < NCOL; c++) {
-							if (Matriz[l][c] == '.' && pos < processoAtual.tamanho){
-								pos++;
-								Matriz[l][c] = processoAtual.simbolo;
-							}
-						}          
-					}
-				}        
-			}
-			
-			system("clear");
-			exibeMatriz();
-			
-			// TESTE TEMP EXEC
-			while (true) {
-				for (int i = 0; i < nProc ; i++){
-					cron = processo[i].tempoExec - 1;
-					processo[i].tempoRest = cron;
-					
-					// chama legenda para os n processos criados
-					exibeMatriz();
-					tituloLegenda();
-					for(int i = 0; i < nProc; i++) {
-						legenda(processo[i].pid, processo[i].simbolo, processo[i].tamanho, processo[i].tempoExec, processo[i].tempoRest);
-					}
-					cout << flush;
-					sleep(1);
-				}
-			}			
 						
-			// chama legenda para os n processos criados
+			firstFit(processo);
+						
 			tituloLegenda();
 			for(int i = 0; i < nProc; i++) {
 				legenda(processo[i].pid, processo[i].simbolo, processo[i].tamanho, processo[i].tempoExec, processo[i].tempoRest);
@@ -191,7 +200,6 @@ int main(int argc, char *argv[ ]) {
 		// comando não encontrado
 		default:
 			cout << "Argumentos inválidos!" "!\n";
-		}
-						
+		}						
 	return 0;
 };
