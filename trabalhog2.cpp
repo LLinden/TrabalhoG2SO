@@ -106,49 +106,49 @@ Processo* construtorProc() {
 // first-fit
 void firstFit(Processo *processo) {	
 	// aqui a alocação propriamente dita
-		for (int numeroProcesso = 0; numeroProcesso < nProc ; numeroProcesso++){ 
-			Processo processoAtual = processo[numeroProcesso];
-			pos = 0;
-			for (int intTamanho = 0; intTamanho < processoAtual.tamanho; intTamanho++){
-				for(int l = 0; l < NLIN; l++) {   
-					for(int c = 0; c < NCOL; c++) {
-						if (Matriz[l][c] == '.' && pos < processoAtual.tamanho){
-							pos++;
-							Matriz[l][c] = processoAtual.simbolo;
-							processoAtual.alocou = 1;
-						}
-					}          
-				}
-			}        
-		}
-			
-		system("clear");
-		exibeMatriz();
-		
-		// calcula tempo total
-		for (int i = 0; i < nProc ; i++){
-				if (processo[i].tempoExec > cron) {
-					cron = processo[i].tempoExec;
-				}
-		}			
-			
-		// tempo de execucao
-		while (cron > 0) {
-			for (int i = 0; i < nProc; i++) {
-				if (processo[i].tempoRest > 0) {
-					int tmp = processo[i].tempoRest - 1;
-					processo[i].tempoRest = tmp;
-				}						
+	for (int numeroProcesso = 0; numeroProcesso < nProc ; numeroProcesso++){ 
+		Processo processoAtual = processo[numeroProcesso];
+		pos = 0;
+		for (int intTamanho = 0; intTamanho < processoAtual.tamanho; intTamanho++){
+			for(int l = 0; l < NLIN; l++) {   
+				for(int c = 0; c < NCOL; c++) {
+					if (Matriz[l][c] == '.' && pos < processoAtual.tamanho){
+						pos++;
+						Matriz[l][c] = processoAtual.simbolo;
+						processoAtual.alocou = 1;
+					}
+				}          
 			}
-			// chama legenda para os n processos criados
-			exibeMatriz();
-			tituloLegenda();
-			legenda(nProc, processo);
-			cron = cron - 1;
-			cout << "\nTEMPO TOTAL RESANTE: " << cron;
-			cout << flush;
-			sleep(1);
+		}        
+	}
+			
+	system("clear");
+	exibeMatriz();
+		
+	// calcula tempo total
+	for (int i = 0; i < nProc ; i++){
+		if (processo[i].tempoExec > cron) {
+			cron = processo[i].tempoExec;
 		}
+	}			
+			
+	// tempo de execucao
+	while (cron > 0) {
+		for (int i = 0; i < nProc; i++) {
+			if (processo[i].tempoRest > 0) {
+				int tmp = processo[i].tempoRest - 1;
+					processo[i].tempoRest = tmp;
+			}						
+		}
+		// chama legenda para os n processos criados
+		exibeMatriz();
+		tituloLegenda();
+		legenda(nProc, processo);
+		cron = cron - 1;
+		cout << "\nTEMPO TOTAL RESANTE: " << cron;
+		cout << flush;
+		sleep(1);
+	}
 };
 
 // inicio
