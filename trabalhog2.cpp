@@ -141,7 +141,7 @@ void firstFit(Processo *processo) {
 
 // inicio
 int main(int argc, char *argv[ ]) {
-	// reseta o seed
+	// reseta o seed de tempo
 	srand(time(0));
 	
 	// trata argumentos passados via linha de comando
@@ -162,7 +162,6 @@ int main(int argc, char *argv[ ]) {
 			
 		// first-fit
 		case Op1:
-			// imprime interface
 			exibeMatriz();
 			// chama legenda para os n processos criados
 			tituloLegenda();
