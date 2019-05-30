@@ -16,7 +16,7 @@ Author: Lucas Linden - Cod. 1110139
 using namespace std;
 
 // variaveis globais
-int nProc, tempo = 0, count = 0, pos, cron = 1;
+int nProc, tempo = 0, count = 0, pos, cron = 1, coord;
 char Matriz[NLIN][NCOL];
 char dicionario[] = {'A','B','C','D','E','F','G','H','I','J','K','L','M',
 					'N','O','P','Q','R','S','T','U','V','X','Y','W','Z'};
@@ -83,7 +83,8 @@ void tituloLegenda() {
 // tabela legenda com a descricao dos processos criados
 void legenda(int nProc, Processo *processo) {
 	for(int i = 0; i < nProc; i++) {
-		cout << processo[i].pid << "\t\t" << processo[i].simbolo << "\t\t" << processo[i].tamanho << "\t\t" << processo[i].tempoExec << "\t\t" << processo[i].tempoRest << "\n";
+		cout << processo[i].pid << "\t\t" << processo[i].simbolo << "\t\t" << processo[i].tamanho 
+		<< "\t\t" << processo[i].tempoExec << "\t\t" << processo[i].tempoRest << "\n";
 	}
 };
 
@@ -109,10 +110,13 @@ void firstFit(Processo *processo) {
 	for (int numeroProcesso = 0; numeroProcesso < nProc ; numeroProcesso++){ 
 		Processo processoAtual = processo[numeroProcesso];
 		pos = 0;
+		// captura ultima coordenada na matriz
+		coord = coord + processoAtual.tamanho;
 		for (int intTamanho = 0; intTamanho < processoAtual.tamanho; intTamanho++){
 			for(int l = 0; l < NLIN; l++) {   
 				for(int c = 0; c < NCOL; c++) {
-					if (Matriz[l][c] == '.' && pos < processoAtual.tamanho){
+					// teste para verificar a possibilidade de alocacao
+					if ((Matriz[l][c] == '.' && pos < processoAtual.tamanho) && (processoAtual.tamanho < (NLIN*NCOL - coord))) {
 						pos++;
 						Matriz[l][c] = processoAtual.simbolo;
 						processoAtual.alocou = 1;
@@ -124,7 +128,7 @@ void firstFit(Processo *processo) {
 			
 	system("clear");
 	exibeMatriz();
-		
+	
 	// calcula tempo total
 	for (int i = 0; i < nProc ; i++){
 		if (processo[i].tempoExec > cron) {
@@ -132,7 +136,7 @@ void firstFit(Processo *processo) {
 		}
 	}			
 			
-	// tempo de execucao
+	// gerencia de tempo de execucao
 	while (cron > 0) {
 		for (int i = 0; i < nProc; i++) {
 			if (processo[i].tempoRest > 0) {
@@ -146,6 +150,7 @@ void firstFit(Processo *processo) {
 		legenda(nProc, processo);
 		cron = cron - 1;
 		cout << "\nTEMPO TOTAL RESANTE: " << cron;
+		cout << "\nCOORD >>> " << coord;	
 		cout << flush;
 		sleep(1);
 	}
