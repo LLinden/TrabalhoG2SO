@@ -128,17 +128,19 @@ void firstFit(Processo *processo) {
 		}			
 			
 		// TESTE TEMP EXEC
-		while (cron != 0) {
+		while (cron > 0) {
 			for (int i = 0; i < nProc; i++) {
-				int tmp = processo[i].tempoExec - 1;
-				processo[i].tempoRest = tmp;
-				cron = cron - 1;						
+				if (processo[i].tempoRest > 0) {
+					int tmp = processo[i].tempoRest - 1;
+					processo[i].tempoRest = tmp;
+					cron = cron - 1;
+				}						
 			}
 			// chama legenda para os n processos criados
 			exibeMatriz();
 			tituloLegenda();
 			legenda(nProc, processo);
-			cout << "( ͡° ͜ʖ ͡°)" << cron;
+			cout << "\n( ͡° ͜ʖ ͡°)/ " << cron;
 			cout << flush;
 			sleep(1);
 		}
