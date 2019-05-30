@@ -80,8 +80,10 @@ void tituloLegenda() {
 };
 
 // tabela legenda com a descricao dos processos criados
-void legenda(int pid, char simbolo, int tamanho, int tempoExec, int tempoRest) {
-	cout << pid << "\t\t" << simbolo << "\t\t" << tamanho << "\t\t" << tempoExec << "\t\t" << tempoRest << "\n";
+void legenda(int nProc, Processo *processo) {
+	for(int i = 0; i < nProc; i++) {
+		cout << processo[i].pid << "\t\t" << processo[i].simbolo << "\t\t" << processo[i].tamanho << "\t\t" << processo[i].tempoExec << "\t\t" << processo[i].tempoRest << "\n";
+	}
 };
 
 // constroi processos
@@ -129,9 +131,8 @@ void firstFit(Processo *processo) {
 				// chama legenda para os n processos criados
 				exibeMatriz();
 				tituloLegenda();
-				for(int i = 0; i < nProc; i++) {
-					legenda(processo[i].pid, processo[i].simbolo, processo[i].tamanho, processo[i].tempoExec, processo[i].tempoRest);
-				}
+				legenda(nProc, processo);
+				
 				cout << flush;
 				sleep(1);
 			}
@@ -165,17 +166,15 @@ int main(int argc, char *argv[ ]) {
 			exibeMatriz();
 			// chama legenda para os n processos criados
 			tituloLegenda();
-			for(int i = 0; i < nProc; i++) {
-				legenda(processo[i].pid, processo[i].simbolo, processo[i].tamanho, processo[i].tempoExec, processo[i].tempoRest);
-			}
+			legenda(nProc, processo);
+
 			sleep(2);
 						
 			firstFit(processo);
 						
 			tituloLegenda();
-			for(int i = 0; i < nProc; i++) {
-				legenda(processo[i].pid, processo[i].simbolo, processo[i].tamanho, processo[i].tempoExec, processo[i].tempoRest);
-			}
+			legenda(nProc, processo);
+
 		
 			break;
 			
