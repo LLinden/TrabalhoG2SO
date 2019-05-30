@@ -28,7 +28,8 @@ class Processo {
 		int tamanho; 
 		int tempoExec;
 		char simbolo;
-		int tempoRest;	
+		int tempoRest;
+		int alocou;	
 };
 
 // opcoes de comando
@@ -97,6 +98,7 @@ Processo* construtorProc() {
 		 processo[i].tempoExec = rand() % 300 + 1;
 		 processo[i].simbolo = dicionario[i];
 		 processo[i].tempoRest = processo[i].tempoExec;
+		 processo[i].alocou = 0;
 	}
 	return processo;	
 };
@@ -113,6 +115,7 @@ void firstFit(Processo *processo) {
 						if (Matriz[l][c] == '.' && pos < processoAtual.tamanho){
 							pos++;
 							Matriz[l][c] = processoAtual.simbolo;
+							processoAtual.alocou = 1;
 						}
 					}          
 				}
