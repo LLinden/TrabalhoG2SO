@@ -132,7 +132,7 @@ void firstFit(Processo *processo) {
 				exibeMatriz();
 				tituloLegenda();
 				legenda(nProc, processo);
-				
+								
 				cout << flush;
 				sleep(1);
 			}
@@ -174,7 +174,6 @@ int main(int argc, char *argv[ ]) {
 						
 			tituloLegenda();
 			legenda(nProc, processo);
-
 		
 			break;
 			
