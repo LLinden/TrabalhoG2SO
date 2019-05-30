@@ -121,21 +121,25 @@ void firstFit(Processo *processo) {
 			
 		system("clear");
 		exibeMatriz();
+		
+		// tempo total
+		for (int i = 0; i < nProc ; i++){
+				cron = cron + processo[i].tempoExec;
+		}			
 			
 		// TESTE TEMP EXEC
-		while (true) {
-			for (int i = 0; i < nProc ; i++){
-				cron = processo[i].tempoExec - 1;
-				processo[i].tempoRest = cron;
-					
-				// chama legenda para os n processos criados
-				exibeMatriz();
-				tituloLegenda();
-				legenda(nProc, processo);
-								
-				cout << flush;
-				sleep(1);
+		while (cron != 0) {
+			cout << flush;
+			for (int i = 0; i < nProc; i++) {
+				int tmp = processo[i].tempoExec - 1;
+				processo[i].tempoRest = tmp;
+				cron = cron - 1;						
 			}
+			// chama legenda para os n processos criados
+			exibeMatriz();
+			tituloLegenda();
+			legenda(nProc, processo);
+			sleep(1);
 		}
 };
 
