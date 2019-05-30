@@ -141,7 +141,6 @@ void firstFit(Processo *processo) {
 			tituloLegenda();
 			legenda(nProc, processo);
 			cout << "\n( ͡° ͜ʖ ͡°)/ " << cron;
-			cout << flush;
 			sleep(1);
 		}
 };
