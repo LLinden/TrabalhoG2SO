@@ -122,14 +122,13 @@ void firstFit(Processo *processo) {
 		system("clear");
 		exibeMatriz();
 		
-		// tempo total
+		// calcula tempo total
 		for (int i = 0; i < nProc ; i++){
 				cron = cron + processo[i].tempoExec;
 		}			
 			
 		// TESTE TEMP EXEC
 		while (cron != 0) {
-			cout << flush;
 			for (int i = 0; i < nProc; i++) {
 				int tmp = processo[i].tempoExec - 1;
 				processo[i].tempoRest = tmp;
@@ -139,6 +138,8 @@ void firstFit(Processo *processo) {
 			exibeMatriz();
 			tituloLegenda();
 			legenda(nProc, processo);
+			cout << "( ͡° ͜ʖ ͡°)" << cron;
+			cout << flush;
 			sleep(1);
 		}
 };
