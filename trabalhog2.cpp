@@ -124,23 +124,26 @@ void firstFit(Processo *processo) {
 		
 		// calcula tempo total
 		for (int i = 0; i < nProc ; i++){
-				cron = cron + processo[i].tempoExec;
+				if (processo[i].tempoExec > cron) {
+					cron = processo[i].tempoExec;
+				}
 		}			
 			
-		// TESTE TEMP EXEC
+		// tempo de execucao
 		while (cron > 0) {
 			for (int i = 0; i < nProc; i++) {
 				if (processo[i].tempoRest > 0) {
 					int tmp = processo[i].tempoRest - 1;
 					processo[i].tempoRest = tmp;
-					cron = cron - 1;
 				}						
 			}
 			// chama legenda para os n processos criados
 			exibeMatriz();
 			tituloLegenda();
 			legenda(nProc, processo);
-			cout << "\n( ͡° ͜ʖ ͡°)/ " << cron;
+			cron = cron - 1;
+			cout << "\nTEMPO TOTAL RESANTE: " << cron;
+			cout << flush;
 			sleep(1);
 		}
 };
@@ -176,9 +179,6 @@ int main(int argc, char *argv[ ]) {
 			sleep(2);
 						
 			firstFit(processo);
-						
-			tituloLegenda();
-			legenda(nProc, processo);
 		
 			break;
 			
