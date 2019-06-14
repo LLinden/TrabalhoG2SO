@@ -13,7 +13,7 @@ using namespace std;
 // constantes
 const int TAMANHO = 5000;
 // variaveis globais
-int nProc, tempo = 0, count = 0, pos, cron = 1, coord;
+int nProc, tempo = 0, count = 0, pos, cron = 1;
 char vetor[TAMANHO];
 char dicionario[] = {'A','B','C','D','E','F','G','H','I','J','K','L','M',
 					'N','O','P','Q','R','S','T','U','V','X','Y','W','Z'};
@@ -140,7 +140,6 @@ void firstFit(Processo *processo) {
 		legenda(nProc, processo);
 		cron = cron - 1;
 		cout << "\nTEMPO TOTAL RESANTE: " << cron;
-		cout << "\nCOORD >>> " << coord;	
 		cout << flush;
 		sleep(1);
 	}
