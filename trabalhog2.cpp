@@ -9,15 +9,12 @@ Author: Lucas Linden - Cod. 1110139
 #include <stdlib.h> 
 #include <unistd.h>
 
-// definição da distribuição da matriz
-#define NLIN 50
-#define NCOL 100
-
 using namespace std;
-
+// constantes
+const int TAMANHO = 5000;
 // variaveis globais
 int nProc, tempo = 0, count = 0, pos, cron = 1, coord;
-char Matriz[NLIN][NCOL];
+char vetor[TAMANHO];
 char dicionario[] = {'A','B','C','D','E','F','G','H','I','J','K','L','M',
 					'N','O','P','Q','R','S','T','U','V','X','Y','W','Z'};
 	
@@ -50,29 +47,26 @@ Opcoes resolveOp(string comando) {
 	return Op_Invalida;
 }
 
-// cria matriz principal
-void criaMatriz(){
-	int i, j;
+// cria vetor principal
+void criaVetor(){
+	int i;
 	
-	for(i=0; i < NLIN; i++) {     
-		for(j=0; j < NCOL; j++) {    
-			Matriz[i][j] = '.';
-		}
+	for(i=0; i < TAMANHO; i++) {     
+		vetor[i] = '.';
 	}						
 };
 
-// exibe matriz na tela
-void exibeMatriz(){
-	int i, j;
+// exibe vetor na tela em forma de matriz
+void exibeVetor(){
+	int i;
 	
 	system("clear");
 		
-	for(i=0; i < NLIN; i++) {     
-		for(j=0; j < NCOL; j++) {   
-			cout << Matriz[i][j];
-		}
-		cout << endl;
-	}		
+	for(i=0; i < TAMANHO; i++) {  
+		if( i % 100 == 0 && i != 0 ) printf("\n");   
+			cout << vetor[i];
+	}
+		cout << endl;	
 };
 
 // cabecalho tabela legenda
@@ -110,24 +104,20 @@ void firstFit(Processo *processo) {
 	for (int numeroProcesso = 0; numeroProcesso < nProc ; numeroProcesso++){ 
 		Processo processoAtual = processo[numeroProcesso];
 		pos = 0;
-		// captura ultima coordenada na matriz
-		coord = coord + processoAtual.tamanho;
 		for (int intTamanho = 0; intTamanho < processoAtual.tamanho; intTamanho++){
-			for(int l = 0; l < NLIN; l++) {   
-				for(int c = 0; c < NCOL; c++) {
-					// teste para verificar a possibilidade de alocacao
-					if ((Matriz[l][c] == '.' && pos < processoAtual.tamanho) && (processoAtual.tamanho < (NLIN*NCOL - coord))) {
-						pos++;
-						Matriz[l][c] = processoAtual.simbolo;
-						processoAtual.alocou = 1;
-					}
-				}          
+			for(int l = 0; l < TAMANHO; l++) {   
+				// teste para verificar a possibilidade de alocacao
+				if ((vetor[l] == '.' && pos < processoAtual.tamanho)) {
+					pos++;
+					vetor[l] = processoAtual.simbolo;
+					processoAtual.alocou = 1;
+				}				         
 			}
 		}        
 	}
 			
 	system("clear");
-	exibeMatriz();
+	exibeVetor();
 	
 	// calcula tempo total
 	for (int i = 0; i < nProc ; i++){
@@ -145,7 +135,7 @@ void firstFit(Processo *processo) {
 			}						
 		}
 		// chama legenda para os n processos criados
-		exibeMatriz();
+		exibeVetor();
 		tituloLegenda();
 		legenda(nProc, processo);
 		cron = cron - 1;
@@ -171,15 +161,15 @@ int main(int argc, char *argv[ ]) {
 	// inicializa os processos
 	Processo *processo = construtorProc();
 	
-	// inicializa matriz
-	criaMatriz();		
+	// inicializa vetor
+	criaVetor();		
 	
 	// seleciona algoritmo a ser executado
 	switch (resolveOp(comando)) {
 			
 		// first-fit
 		case Op1:
-			exibeMatriz();
+			exibeVetor();
 			// chama legenda para os n processos criados
 			tituloLegenda();
 			legenda(nProc, processo);
