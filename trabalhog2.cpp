@@ -109,15 +109,30 @@ Processo* construtorProc() {
 // first-fit
 void firstFit(Processo *processo) {	
 	// aqui a alocação propriamente dita
-	int aindaExistePonto = 0;
+	//int aindaExistePonto = 0;
 
-	while (aindaExistePonto == 0){
+	/*while (aindaExistePonto == 0){
 	//cria blocos;
 	
 
 		if (!matriz.contem(ponto)){
 			aindaExistePonto = 1;
 		}
+	}*/
+
+	for (int numeroProcesso = 0; numeroProcesso < nProc ; numeroProcesso++){ 
+		Processo processoAtual = processo[numeroProcesso];
+		pos = 0;
+		for (int intTamanho = 0; intTamanho < processoAtual.tamanho; intTamanho++){
+			for(int l = 0; l < TAMANHO; l++) {   
+				// teste para verificar a possibilidade de alocacao
+				if ((vetor[l] == '.' && pos < processoAtual.tamanho)) {
+					pos++;
+					vetor[l] = processoAtual.simbolo;
+					processoAtual.alocou = 1;
+				}				         
+			}
+		}        
 	}
 	
 			
