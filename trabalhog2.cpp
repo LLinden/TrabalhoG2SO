@@ -26,13 +26,14 @@ class Processo {
 		int tempoExec;
 		char simbolo;
 		int tempoRest;
-		int alocou;	
 };
 
 // modelo do objeto Bloco
 class  Bloco {
 	public:
 		int id;
+		int posInicial;
+		int posFinal;
 		int tamanho;
 		int usado;
 };
@@ -106,20 +107,22 @@ Processo* construtorProc() {
 	return processo;	
 };
 
+// constroi blocos
+Bloco* construtorBloco() {
+	int partida;
+	
+	Bloco bloco;
+
+	for (int i = 0; i < TAMANHO) {
+		bloco[i].posInicial = partida;
+		bloco[i].tamanho = bloco[i].tamanho + 1;
+		if (i != '.') break;
+	}
+}
+
 // first-fit
 void firstFit(Processo *processo) {	
 	// aqui a alocação propriamente dita
-	//int aindaExistePonto = 0;
-
-	/*while (aindaExistePonto == 0){
-	//cria blocos;
-	
-
-		if (!matriz.contem(ponto)){
-			aindaExistePonto = 1;
-		}
-	}*/
-
 	for (int numeroProcesso = 0; numeroProcesso < nProc ; numeroProcesso++){ 
 		Processo processoAtual = processo[numeroProcesso];
 		pos = 0;
@@ -129,7 +132,6 @@ void firstFit(Processo *processo) {
 				if ((vetor[l] == '.' && pos < processoAtual.tamanho)) {
 					pos++;
 					vetor[l] = processoAtual.simbolo;
-					processoAtual.alocou = 1;
 				}				         
 			}
 		}        
