@@ -111,7 +111,7 @@ Processo* construtorProc() {
 Bloco* construtorBloco() {
 	int partida;
 	
-	Bloco bloco;
+	Bloco bloco; // como criar dinamicamente sem sobrescrever?
 
 	for (int i = 0; i < TAMANHO) {
 		bloco[i].posInicial = partida;
