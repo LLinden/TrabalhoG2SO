@@ -110,25 +110,45 @@ Processo* construtorProc() {
 Bloco* construtorBloco() {
 	int idBlocos = 0;
 	
+	Bloco *blocos = new Bloco[2500];
+	
 	for (int i = 0; i < TAMANHO; i++) {
 		if (vetor[i] == '.') {
-			Bloco *bloco;
-			bloco[i].inicio = i;
-			bloco[i].id = idBlocos++;		
+			Bloco bloco;
+			bloco.inicio = i;
+			
+			printf("ponto inicial");
+			cout << bloco.inicio;
+			
+			bloco.id = idBlocos;		
 	
-			for (int j = i; j < TAMANHO; j++) {
-				if(vetor[j] != '.') {
+			for (int j = i; j <= TAMANHO; j++) {
+				if(vetor[j] != '.' || j == TAMANHO) {
 					// terminou a leitura e identifica ultima posicao
-					bloco[i].fim = j - 1;
+					bloco.fim = j - 1;
+					printf("vai alterar o i, j atual: ");
+					cout << j;
+					i = j; //vai fazer o for pular para o ponto de onde parou a leitura do bloco;
+
 				break;
 				}
 			}
+			
+			bloco.tamanho = bloco.fim - bloco.inicio;
+			printf("id\n");
+			cout << bloco.id << "\n";
+			printf("tamanho\n");
+			cout << bloco.tamanho << "\n";
+			printf("inicio\n");
+			cout << bloco.inicio << "\n";
+			printf("fim\n");
+			cout <<bloco.fim << "\n\n";
+			cout << "-----------------------------------\n";
+			blocos[idBlocos++] = bloco;
 		}
-		//cout << bloco;
-		//lista.adicionar(bloco);
-		//i = j; //vai fazer o for pular para o ponto de onde parou a leitura do bloco;
+
 	}
-	return bloco;
+	return blocos;
 };
 
 // first-fit
@@ -178,6 +198,19 @@ void firstFit(Processo *processo) {
 	}
 };
 
+// circular-fit
+void circularFit() {
+	Bloco *blocos = construtorBloco();
+	/*for (int i = 0; i < 2; i++) {
+		cout << blocos[i].id << "\n";
+		cout << blocos[i].tamanho << "\n";
+		cout << blocos[i].inicio << "\n";
+		cout <<blocos[i].fim << "\n\n";
+		cout << "-----------------------------------\n";
+	}
+	cout << endl;*/
+};
+
 // inicio
 int main(int argc, char *argv[ ]) {
 	// reseta o seed de tempo
@@ -214,6 +247,9 @@ int main(int argc, char *argv[ ]) {
 			
 		// circular-fit
 		case Op2:
+			
+			exibeVetor();
+			circularFit();
 
 			break;
 			
