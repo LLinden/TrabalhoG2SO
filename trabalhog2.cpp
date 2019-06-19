@@ -110,6 +110,7 @@ Processo* construtorProc() {
 Bloco* construtorBloco() {
 	int idBlocos = 0;
 	
+	// vetor de blocos possui a quantidade max. de blocos que pode haver
 	Bloco *blocos = new Bloco[2500];
 	
 	for (int i = 0; i < TAMANHO; i++) {
@@ -124,7 +125,8 @@ Bloco* construtorBloco() {
 					// terminou a leitura e identifica ultima posicao
 					bloco.fim = j - 1;
 					cout << j;
-					i = j; //vai fazer o for pular para o ponto de onde parou a leitura do bloco;
+					// vai fazer o laço pular para o ponto de onde parou a leitura do bloco
+					i = j; 
 
 				break;
 				}
@@ -147,18 +149,17 @@ Bloco* construtorBloco() {
 	return blocos;
 };
 
+// escreve processos dentro do bloco e no vetor
 void escreveProcesso(Processo processo, Bloco bloco){
 	printf("escrevendo bloco no processo\nblocoInicio: ");
 	cout << bloco.inicio;
 	printf("\ntamanhoProcesso: ");
 	cout << processo.tamanho;
 	
-	
-		for (int i = bloco.inicio; i < processo.tamanho; i++){
-				vetor[i] = processo.simbolo;	
-		}
-}
-
+	for (int i = bloco.inicio; i < processo.tamanho; i++){
+		vetor[i] = processo.simbolo;	
+	}
+};
 
 // first-fit
 void firstFit(Processo *processo) {	
@@ -197,8 +198,7 @@ void firstFit(Processo *processo) {
 		if (alocou == 1){
 			escreveProcesso(processoAtual, blocoQueCabeOProcesso);
 		}
-	}
-	
+	}	
 			
 	//system("clear");
 	exibeVetor();
