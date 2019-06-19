@@ -13,7 +13,7 @@ using namespace std;
 // constantes
 const int TAMANHO = 5000;
 // variaveis globais
-int nProc, tempo = 0, count = 0, pos, cron = 1;
+int nProc, tempo = 0, count = 0, cron = 1;
 char vetor[TAMANHO];
 char dicionario[] = {'A','B','C','D','E','F','G','H','I','J','K','L','M',
 					'N','O','P','Q','R','S','T','U','V','X','Y','W','Z'};
@@ -155,7 +155,7 @@ void escreveProcesso(Processo processo, Bloco bloco){
 	
 	
 		for (int i = bloco.inicio; i < processo.tamanho; i++){
-				vetor[i] = processo.simbolo;		
+				vetor[i] = processo.simbolo;	
 		}
 }
 
@@ -179,8 +179,7 @@ void firstFit(Processo *processo) {
 	
 	for (int numeroProcesso = 0; numeroProcesso < nProc ; numeroProcesso++){ 
 		Processo processoAtual = processo[numeroProcesso];
-		pos = 0;
-		
+
 		int alocou = 0;
 		Bloco blocoQueCabeOProcesso;
 		
@@ -229,8 +228,6 @@ void firstFit(Processo *processo) {
 		sleep(1);
 	}
 };
-
-
 
 // circular-fit
 void circularFit() {
