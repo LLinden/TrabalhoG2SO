@@ -102,34 +102,34 @@ Processo* construtorProc() {
 		 processo[i].tempoExec = rand() % 300 + 1;
 		 processo[i].simbolo = dicionario[i];
 		 processo[i].tempoRest = processo[i].tempoExec;
-		 processo[i].alocou = 0;
 	}
 	return processo;	
 };
 
 // constroi blocos
 Bloco* construtorBloco() {
-	int partida, idBlocos = 0;
+	int idBlocos = 0;
 	
 	for (int i = 0; i < TAMANHO; i++) {
-		if (vetor[i] == ".") {
-			Bloco bloco;
-			bloco.inicio = i;
-			bloco.id = idBlocos + 1;		
+		if (vetor[i] == '.') {
+			Bloco *bloco;
+			bloco[i].inicio = i;
+			bloco[i].id = idBlocos++;		
 	
 			for (int j = i; j < TAMANHO; j++) {
-				if(vetor[j] != ".") {
+				if(vetor[j] != '.') {
 					// terminou a leitura e identifica ultima posicao
-					bloco.fim = j - 1;
+					bloco[i].fim = j - 1;
 				break;
 				}
 			}
 		}
-		
-		lista.adicionar(bloco);
-		i = j; //vai fazer o for pular para o ponto de onde parou a leitura do bloco;
+		//cout << bloco;
+		//lista.adicionar(bloco);
+		//i = j; //vai fazer o for pular para o ponto de onde parou a leitura do bloco;
 	}
-}
+	return bloco;
+};
 
 // first-fit
 void firstFit(Processo *processo) {	
