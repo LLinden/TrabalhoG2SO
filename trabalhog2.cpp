@@ -32,8 +32,8 @@ class Processo {
 class  Bloco {
 	public:
 		int id;
-		int posInicial;
-		int posFinal;
+		int inicio;
+		int fim;
 		int tamanho;
 		int usado;
 };
@@ -109,14 +109,25 @@ Processo* construtorProc() {
 
 // constroi blocos
 Bloco* construtorBloco() {
-	int partida;
+	int partida, idBlocos = 0;
 	
-	Bloco bloco; // como criar dinamicamente sem sobrescrever?
-
-	for (int i = 0; i < TAMANHO) {
-		bloco[i].posInicial = partida;
-		bloco[i].tamanho = bloco[i].tamanho + 1;
-		if (i != '.') break;
+	for (int i = 0; i < TAMANHO; i++) {
+		if (vetor[i] == ".") {
+			Bloco bloco;
+			bloco.inicio = i;
+			bloco.id = idBlocos + 1;		
+	
+			for (int j = i; j < TAMANHO; j++) {
+				if(vetor[j] != ".") {
+					// terminou a leitura e identifica ultima posicao
+					bloco.fim = j - 1;
+				break;
+				}
+			}
+		}
+		
+		lista.adicionar(bloco);
+		i = j; //vai fazer o for pular para o ponto de onde parou a leitura do bloco;
 	}
 }
 
