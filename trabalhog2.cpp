@@ -69,7 +69,7 @@ void criaVetor(){
 void exibeVetor(){
 	int i;
 	
-	system("clear");
+	//system("clear");
 		
 	for(i=0; i < TAMANHO; i++) {  
 		if( i % 100 == 0 && i != 0 ) printf("\n");   
@@ -114,19 +114,15 @@ Bloco* construtorBloco() {
 	
 	for (int i = 0; i < TAMANHO; i++) {
 		if (vetor[i] == '.') {
+			idBlocos = idBlocos + 1;
 			Bloco bloco;
 			bloco.inicio = i;
-			
-			printf("ponto inicial");
-			cout << bloco.inicio;
-			
 			bloco.id = idBlocos;		
 	
 			for (int j = i; j <= TAMANHO; j++) {
 				if(vetor[j] != '.' || j == TAMANHO) {
 					// terminou a leitura e identifica ultima posicao
 					bloco.fim = j - 1;
-					printf("vai alterar o i, j atual: ");
 					cout << j;
 					i = j; //vai fazer o for pular para o ponto de onde parou a leitura do bloco;
 
@@ -135,26 +131,39 @@ Bloco* construtorBloco() {
 			}
 			
 			bloco.tamanho = bloco.fim - bloco.inicio;
-			printf("id\n");
+			printf("\n\nid: ");
 			cout << bloco.id << "\n";
-			printf("tamanho\n");
+			printf("tamanho: ");
 			cout << bloco.tamanho << "\n";
-			printf("inicio\n");
+			printf("inicio: ");
 			cout << bloco.inicio << "\n";
-			printf("fim\n");
+			printf("fim: ");
 			cout <<bloco.fim << "\n\n";
 			cout << "-----------------------------------\n";
-			blocos[idBlocos++] = bloco;
+			blocos[idBlocos] = bloco;
 		}
 
 	}
 	return blocos;
 };
 
+void escreveProcesso(Processo processo, Bloco bloco){
+	printf("escrevendo bloco no processo\nblocoInicio: ");
+	cout << bloco.inicio;
+	printf("\ntamanhoProcesso: ");
+	cout << processo.tamanho;
+	
+	
+		for (int i = bloco.inicio; i < processo.tamanho; i++){
+				vetor[i] = processo.simbolo;		
+		}
+}
+
+
 // first-fit
 void firstFit(Processo *processo) {	
 	// aqui a alocação propriamente dita
-	for (int numeroProcesso = 0; numeroProcesso < nProc ; numeroProcesso++){ 
+	/*for (int numeroProcesso = 0; numeroProcesso < nProc ; numeroProcesso++){ 
 		Processo processoAtual = processo[numeroProcesso];
 		pos = 0;
 		for (int intTamanho = 0; intTamanho < processoAtual.tamanho; intTamanho++){
@@ -166,10 +175,33 @@ void firstFit(Processo *processo) {
 				}				         
 			}
 		}        
+	}*/
+	
+	for (int numeroProcesso = 0; numeroProcesso < nProc ; numeroProcesso++){ 
+		Processo processoAtual = processo[numeroProcesso];
+		pos = 0;
+		
+		int alocou = 0;
+		Bloco blocoQueCabeOProcesso;
+		
+		Bloco *blocos = construtorBloco();
+		
+		for (int numeroBloco = 0; numeroBloco < 2500; numeroBloco++){
+			Bloco blocoAtual = blocos[numeroBloco];
+			if (blocoAtual.tamanho <= processoAtual.tamanho){
+				blocoQueCabeOProcesso = blocoAtual;
+				alocou = 1;
+				break;
+			}
+		}
+		
+		if (alocou == 1){
+			escreveProcesso(processoAtual, blocoQueCabeOProcesso);
+		}
 	}
 	
 			
-	system("clear");
+	//system("clear");
 	exibeVetor();
 	
 	// calcula tempo total
@@ -198,9 +230,11 @@ void firstFit(Processo *processo) {
 	}
 };
 
+
+
 // circular-fit
 void circularFit() {
-	Bloco *blocos = construtorBloco();
+	//Bloco *blocos = construtorBloco();
 	/*for (int i = 0; i < 2; i++) {
 		cout << blocos[i].id << "\n";
 		cout << blocos[i].tamanho << "\n";
