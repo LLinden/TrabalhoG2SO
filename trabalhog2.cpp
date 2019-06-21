@@ -154,33 +154,33 @@ void escreveProcesso(Processo processo, Bloco bloco){
 	cout << "processotamanho: " << processo.tamanho << "\n";
 	cout << "processosimbolo: " << processo.simbolo << "\n";
 
-  cout << "iniciando com valor i: " << j << "\n";
 	
 	for (int i = bloco.inicio; i < bloco.inicio + processo.tamanho; i++){
 		vetor[i] = processo.simbolo;	
 	}
+  processo.alocado = 1;
 };
 
 // first-fit
 void firstFit(Processo processo) {
-		int alocou = 0;
-		Bloco blocoQueCabeOProcesso;
-		
-		Bloco *blocos = construtorBloco();
-		
-		for (int numeroBloco = 0; numeroBloco < 2500; numeroBloco++){
-			Bloco blocoAtual = blocos[numeroBloco];
-			if (blocoAtual.tamanho >= processo.tamanho){
-				blocoQueCabeOProcesso = blocoAtual;
-				alocou = 1;
-				break;
-			}
-		}
-		
-		if (alocou == 1){
-			escreveProcesso(processo, blocoQueCabeOProcesso);
-		}
-	}	
+  int encontrouBlocoParaAlocar = 0;
+  Bloco blocoQueCabeOProcesso;
+  
+  Bloco *blocos = construtorBloco();
+  
+  for (int numeroBloco = 0; numeroBloco < 2500; numeroBloco++){
+    Bloco blocoAtual = blocos[numeroBloco];
+    if (blocoAtual.tamanho >= processo.tamanho){
+      blocoQueCabeOProcesso = blocoAtual;
+      encontrouBlocoParaAlocar = 1;
+      break;
+    }
+  }
+  
+  if (encontrouBlocoParaAlocar == 1){
+    escreveProcesso(processo, blocoQueCabeOProcesso);
+  }
+};	
 			
 	//system("clear");
 	//exibeVetor();
@@ -209,7 +209,7 @@ void firstFit(Processo processo) {
 	// 	cout << flush;
 	// 	sleep(1);
 	// }
-};
+
 
 // best-fit
 void bestFit(Processo processo) {
