@@ -17,6 +17,7 @@ int nProc, tempo = 0, count = 0, cron = 1;
 char vetor[TAMANHO];
 char dicionario[] = {'A','B','C','D','E','F','G','H','I','J','K','L','M',
 					'N','O','P','Q','R','S','T','U','V','X','Y','W','Z'};
+Processo *listaProcessos;
 	
 // modelo do objeto Processo
 class Processo {
@@ -231,7 +232,7 @@ void bestFit(Processo processo) {
         }
       }
       
-      listaDeBlocos.sort()
+      listaDeBlocos.sort(tamanho) // NAO FUNCIONA HAHA!
 
       for (int numeroBloco = 0; numeroBloco < 2500; numeroBloco++){
         // chama e percorre a lista de blocos
@@ -249,51 +250,107 @@ void bestFit(Processo processo) {
 };
 
 void alocarProcesso(){
-  //seleciona o próximo processo para alocar
 
   Processo proximoProcessoParaAlocar;
+  int processoSelecionado = 0;
 
-	for (int numeroProcesso = 0; numeroProcesso < nProc ; numeroProcesso++){ 
-    if (processo[numeroProcesso])
-
-
-		Processo processoAtual = processo[numeroProcesso];
+  //seleciona o próximo processo para alocar
+	for (int indice = 0; indice < nProc ; indice++){ 
+    if (listaProcessos[indice].alocado = 0 && listaProcessos[indice].tempoRest != 0){
+      proximoProcessoParaAlocar = listaProcessos[indice];
+      processoSelecionado = 1;
+      break;
+    }
   }
 
-	// seleciona algoritmo a ser executado
-	switch (resolveOp(comando)) {			
-    case Op1: // first-fit
-			firstFit(processo);
-			break;
-		case Op2: // circular-fit TODO
-			break;
-		case Op3: // best-fit
-      bestFit(processo)
-			break;
-		case Op4: // worst-fit TODO
-			break;		
-		default:
-			cout << "Argumentos inválidos!" "!\n";
-		}						
+  if (processoSelecionado == 1){
+    // seleciona algoritmo a ser executado
+    switch (resolveOp(comando)) {			
+      case Op1: // first-fit
+        firstFit(proximoProcessoParaAlocar);
+        break;
+      case Op2: // circular-fit TODO
+        break;
+      case Op3: // best-fit
+        bestFit(proximoProcessoParaAlocar)
+        break;
+      case Op4: // worst-fit TODO
+        break;
+      }						
+  }
 };
+
+int deveAlocarProcesso(){
+  int numeroGerado = rand() % 100 + 1;
+
+  if (numeroGerado <= 20){
+    return 1;
+  } else {
+    return 0;
+  }
+};
+
+void descontarTempoDosProcessoEmAndamento(){
+  for (int i = 0; i > nProc; i++){
+    if (listaProcessos[i].alocado == 1){
+      listaProcessos[i].tempoRest = listaProcessos[i].tempoRest - 1;
+    }
+  }
+};
+
+void removerProcessosFinalizadosDaMatriz(){
+  for (int i = 0; i > nProc; i++){
+    if (listaProcessos[i].alocado == 1 && listaProcessos[i].tempoRest == 0){ //deve remover      
+      for (int j = 0; j < TAMANHO; j++) { //percorre matriz
+        if (vetor[j] == listaProcessos[i].simbolo) {
+          vetor[j] = '.'; //remove
+        }
+      }
+    }
+  }
+
+}
+
+void atualizarInformacoesParaRelatorio(){
+  //TODO
+}
 
 void atualizaProcessos(){
 
-  descontarTempoDosProcessoEmAndamento(); //TODO
-  removerProcessosFinalizadosDaMatriz(); //TODO
-
-  if (deveAlocarProcesso()){ //TODO
+  descontarTempoDosProcessoEmAndamento();
+  removerProcessosFinalizadosDaMatriz();
+  
+  if (deveAlocarProcesso() == 1){
     alocarProcesso();
   }
+
+  atualizarInformacoesParaRelatorio(); //TODO
 };
 
-void imprimeCiclo(){ //TODO
+void imprimeCiclo(){
   // chama legenda para os n processos criados
   tituloLegenda();
   legenda(nProc, processo);
-
   exibeVetor();
 }
+
+int existemProcessosPendentes(){
+  for (int i = 0; i > nProc; i++){
+    if (listaProcessos[i].alocado == 1 || && listaProcessos[i].tempoRest != 0){
+      return 1;
+    }
+  }
+  return 0;
+}
+
+void espera(){
+  sleep(tempo); //verifica se isso está correto
+}
+
+void imprimeRelatorioCompleto(){ //TODO
+
+}
+
 
 // inicio
 int main(int argc, char *argv[ ]) {
@@ -308,16 +365,15 @@ int main(int argc, char *argv[ ]) {
 	if (argv[3] != NULL) tempo = atoi(argv[3]);	
 		
 	// inicializa os processos
-	Processo *processo = construtorProc();
+	listaProcessos = construtorProc();
 	
 	// inicializa vetor
 	criaVetor();		
 
-  while(existemProcessosPendentes()){ //TODO
+  while(existemProcessosPendentes() == 1){
     atualizaProcessos();
-    imprimeCiclo(); //TODO
-
-    espera(); //TODO
+    imprimeCiclo();
+    espera();
   }
 
   imprimeRelatorioCompleto(); //TODO
