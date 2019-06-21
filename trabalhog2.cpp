@@ -1,9 +1,6 @@
 /******************************************************************************
 Trabalho G2 - Sistemas Operacionais
 Author: Lucas Linden - Cod. 1110139
-
-./main first-fit 1
-
 *******************************************************************************/
 #include <iostream>
 #include <string>
@@ -145,7 +142,6 @@ Bloco* construtorBloco() {
 // escreve processos dentro do bloco e no vetor
 void escreveProcesso(Processo processo, Bloco bloco){
 
-
 	printf("escrevendo processo no bloco\n");
   cout << "dados bloco: \n";
 	cout << "blocoInicio: " << bloco.inicio << "\n";
@@ -159,12 +155,11 @@ void escreveProcesso(Processo processo, Bloco bloco){
   cout << "iniciando com valor i: " << j << "\n";
 	
 	for (int i = bloco.inicio; i < bloco.inicio + processo.tamanho; i++){
-    cout << "vlr i: " << i << ", ";
 		vetor[i] = processo.simbolo;	
-		
 	}
 };
 
+// first-fit
 void firstFit(Processo *processo) {
 	for (int numeroProcesso = 0; numeroProcesso < nProc ; numeroProcesso++){ 
 		Processo processoAtual = processo[numeroProcesso];
@@ -222,42 +217,14 @@ void circularFit() {
 	//Bloco *blocos = construtorBloco();
 };
 
-// inicio
-int main(int argc, char *argv[ ]) {
-	// reseta o seed de tempo
-	srand(time(0));
-	
-	// trata argumentos passados via linha de comando
-	string comando = argv[1];
-	resolveOp(comando);	
-	nProc = atoi(argv[2]);
-	// arumento tempo opcional
-	if (argv[3] != NULL) tempo = atoi(argv[3]);	
-		
-	// inicializa os processos
-	Processo *processo = construtorProc();
-	
-	// inicializa vetor
-	criaVetor();		
-	
+void atualizaProcessos(){
+
 	// seleciona algoritmo a ser executado
-	switch (resolveOp(comando)) {
-			
+	switch (resolveOp(comando)) {			
 		// first-fit
-		case Op1:
-
-			//sleep(2);
-						
+    case Op1: 
 			firstFit(processo);
-
-			// chama legenda para os n processos criados
-			tituloLegenda();
-			legenda(nProc, processo);
-
-			exibeVetor();
-		
 			break;
-			
 		// circular-fit
 		case Op2:
 			
@@ -281,4 +248,51 @@ int main(int argc, char *argv[ ]) {
 			cout << "Argumentos inválidos!" "!\n";
 		}						
 	return 0;
+};
+
+void imprimeCiclo(){
+  
+
+
+			// chama legenda para os n processos criados
+			tituloLegenda();
+			legenda(nProc, processo);
+
+			exibeVetor();
+		
+
+}
+
+
+
+
+// inicio
+int main(int argc, char *argv[ ]) {
+	// reseta o seed de tempo
+	srand(time(0));
+	
+	// trata argumentos passados via linha de comando
+	string comando = argv[1];
+	resolveOp(comando);	
+	nProc = atoi(argv[2]);
+	// arumento tempo opcional
+	if (argv[3] != NULL) tempo = atoi(argv[3]);	
+		
+	// inicializa os processos
+	Processo *processo = construtorProc();
+	
+	// inicializa vetor
+	criaVetor();		
+
+  while(existemProcessosPendentes()){
+    atualizaProcessos();
+    imprimeCiclo();
+
+    espera();
+  }
+
+  imprimeRelatorioCompleto();
+
+
+
 };
