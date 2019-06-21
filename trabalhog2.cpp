@@ -1,6 +1,9 @@
 /******************************************************************************
 Trabalho G2 - Sistemas Operacionais
 Author: Lucas Linden - Cod. 1110139
+
+./main first-fit 1
+
 *******************************************************************************/
 #include <iostream>
 #include <string>
@@ -124,7 +127,6 @@ Bloco* construtorBloco() {
 				if(vetor[j] != '.' || j == TAMANHO) {
 					// terminou a leitura e identifica ultima posicao
 					bloco.fim = j - 1;
-					cout << j;
 					// vai fazer o laço pular para o ponto de onde parou a leitura do bloco
 					i = j; 
 
@@ -133,15 +135,6 @@ Bloco* construtorBloco() {
 			}
 			
 			bloco.tamanho = bloco.fim - bloco.inicio;
-			printf("\n\nid: ");
-			cout << bloco.id << "\n";
-			printf("tamanho: ");
-			cout << bloco.tamanho << "\n";
-			printf("inicio: ");
-			cout << bloco.inicio << "\n";
-			printf("fim: ");
-			cout <<bloco.fim << "\n\n";
-			cout << "-----------------------------------\n";
 			blocos[idBlocos] = bloco;
 		}
 
@@ -151,34 +144,28 @@ Bloco* construtorBloco() {
 
 // escreve processos dentro do bloco e no vetor
 void escreveProcesso(Processo processo, Bloco bloco){
-	printf("escrevendo bloco no processo\nblocoInicio: ");
-	cout << bloco.inicio;
-	printf("\ntamanhoProcesso: ");
-	cout << processo.tamanho;
+
+
+	printf("escrevendo processo no bloco\n");
+  cout << "dados bloco: \n";
+	cout << "blocoInicio: " << bloco.inicio << "\n";
+  cout << "blocofim: " << bloco.fim << "\n";
+  cout << "blocotamanho:" << bloco.tamanho << "\n";  
+
+  cout << "\n\n\ndados processo: \n";
+	cout << "processotamanho: " << processo.tamanho << "\n";
+	cout << "processosimbolo: " << processo.simbolo << "\n";
+
+  cout << "iniciando com valor i: " << j << "\n";
 	
-	for (int i = bloco.inicio; i < processo.tamanho; i++){
+	for (int i = bloco.inicio; i < bloco.inicio + processo.tamanho; i++){
+    cout << "vlr i: " << i << ", ";
 		vetor[i] = processo.simbolo;	
 		
 	}
 };
 
-// first-fit
-void firstFit(Processo *processo) {	
-	// aqui a alocação propriamente dita
-	/*for (int numeroProcesso = 0; numeroProcesso < nProc ; numeroProcesso++){ 
-		Processo processoAtual = processo[numeroProcesso];
-		pos = 0;
-		for (int intTamanho = 0; intTamanho < processoAtual.tamanho; intTamanho++){
-			for(int l = 0; l < TAMANHO; l++) {   
-				// teste para verificar a possibilidade de alocacao
-				if ((vetor[l] == '.' && pos < processoAtual.tamanho)) {
-					pos++;
-					vetor[l] = processoAtual.simbolo;
-				}				         
-			}
-		}        
-	}*/
-	
+void firstFit(Processo *processo) {
 	for (int numeroProcesso = 0; numeroProcesso < nProc ; numeroProcesso++){ 
 		Processo processoAtual = processo[numeroProcesso];
 
@@ -197,64 +184,42 @@ void firstFit(Processo *processo) {
 		}
 		
 		if (alocou == 1){
-			printf("\n\nid: ");
-			cout << blocoQueCabeOProcesso.id << "\n";
-			printf("tamanho: ");
-			cout << blocoQueCabeOProcesso.tamanho << "\n";
-			printf("inicio: ");
-			cout << blocoQueCabeOProcesso.inicio << "\n";
-			printf("fim: ");
-			cout << blocoQueCabeOProcesso.fim << "\n\n";
-			cout << "-----------------------------------\n";
-			printf("\n\nProcid: ");
-			cout << processoAtual.pid << "\n";
-			printf("Proctamanho: ");
-			cout << processoAtual.tamanho << "\n";
-			cout << "-----------------------------------\n";
 			escreveProcesso(processoAtual, blocoQueCabeOProcesso);
 		}
 	}	
 			
 	//system("clear");
-	exibeVetor();
+	//exibeVetor();
 	
-	// calcula tempo total
-	for (int i = 0; i < nProc ; i++){
-		if (processo[i].tempoExec > cron) {
-			cron = processo[i].tempoExec;
-		}
-	}			
+	// // calcula tempo total
+	// for (int i = 0; i < nProc ; i++){
+	// 	if (processo[i].tempoExec > cron) {
+	// 		cron = processo[i].tempoExec;
+	// 	}
+	// }			
 			
-	// gerencia de tempo de execucao
-	while (cron > 0) {
-		for (int i = 0; i < nProc; i++) {
-			if (processo[i].tempoRest > 0) {
-				int tmp = processo[i].tempoRest - 1;
-					processo[i].tempoRest = tmp;
-			}						
-		}
-		// chama legenda para os n processos criados
-		exibeVetor();
-		tituloLegenda();
-		legenda(nProc, processo);
-		cron = cron - 1;
-		cout << "\nTEMPO TOTAL RESANTE: " << cron;
-		cout << flush;
-		sleep(1);
-	}
+	// // gerencia de tempo de execucao
+	// while (cron > 0) {
+	// 	for (int i = 0; i < nProc; i++) {
+	// 		if (processo[i].tempoRest > 0) {
+	// 			int tmp = processo[i].tempoRest - 1;
+	// 				processo[i].tempoRest = tmp;
+	// 		}						
+	// 	}
+	// 	// chama legenda para os n processos criados
+	// 	exibeVetor();
+	// 	tituloLegenda();
+	// 	legenda(nProc, processo);
+	// 	cron = cron - 1;
+	// 	cout << "\nTEMPO TOTAL RESANTE: " << cron << "\n";
+	// 	cout << flush;
+	// 	sleep(1);
+	// }
 };
 
 // circular-fit
 void circularFit() {
 	//Bloco *blocos = construtorBloco();
-	/*for (int i = 0; i < 2; i++) {
-		cout << blocos[i].id << "\n";
-		cout << blocos[i].tamanho << "\n";
-		cout << blocos[i].inicio << "\n";
-		cout <<blocos[i].fim << "\n\n";
-		cout << "-----------------------------------\n";
-	}
-	cout << endl;*/
 };
 
 // inicio
@@ -280,14 +245,16 @@ int main(int argc, char *argv[ ]) {
 			
 		// first-fit
 		case Op1:
-			exibeVetor();
+
+			//sleep(2);
+						
+			firstFit(processo);
+
 			// chama legenda para os n processos criados
 			tituloLegenda();
 			legenda(nProc, processo);
 
-			sleep(2);
-						
-			firstFit(processo);
+			exibeVetor();
 		
 			break;
 			
