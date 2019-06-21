@@ -17,7 +17,6 @@ int nProc, tempo = 0, count = 0, cron = 1;
 char vetor[TAMANHO];
 char dicionario[] = {'A','B','C','D','E','F','G','H','I','J','K','L','M',
 					'N','O','P','Q','R','S','T','U','V','X','Y','W','Z'};
-Processo *listaProcessos;
 	
 // modelo do objeto Processo
 class Processo {
@@ -29,6 +28,8 @@ class Processo {
 		int tempoRest;
     int alocado = 0; //0 = false, 1 = true
 };
+
+Processo *listaProcessos;
 
 // modelo do objeto Bloco
 class  Bloco {
@@ -48,6 +49,8 @@ enum Opcoes {
 	Op3,
 	Op4,
 };
+
+Opcoes opcao;
 	
 // traduz valor do comando para uso dentro do switch
 Opcoes resolveOp(string comando) {
@@ -214,39 +217,39 @@ void firstFit(Processo processo) {
 // best-fit
 void bestFit(Processo processo) {
 
-      int alocou = 0;
+  //     int alocou = 0;
 
-      Bloco blocoQueCabeOProcesso;
+  //     Bloco blocoQueCabeOProcesso;
       
-      Bloco *blocos = construtorBloco();
+  //     Bloco *blocos = construtorBloco();
 
-      // lista de blocos ???
-      list<Bloco> listaDeBlocos;
+  //     // lista de blocos ???
+  //     list<Bloco> listaDeBlocos;
       
-      for (int numeroBloco = 0; numeroBloco < 2500; numeroBloco++){
-        Bloco blocoAtual = blocos[numeroBloco];
-        if (blocoAtual.tamanho >= processoAtual.tamanho){
-          // lista guarda bloco TODO
-          // Joe Macaroni
-          listaDeBlocos.push_back(blocoAtual);
-        }
-      }
+  //     for (int numeroBloco = 0; numeroBloco < 2500; numeroBloco++){
+  //       Bloco blocoAtual = blocos[numeroBloco];
+  //       if (blocoAtual.tamanho >= processoAtual.tamanho){
+  //         // lista guarda bloco TODO
+  //         // Joe Macaroni
+  //         listaDeBlocos.push_back(blocoAtual);
+  //       }
+  //     }
       
-      listaDeBlocos.sort(tamanho) // NAO FUNCIONA HAHA!
+  //     listaDeBlocos.sort(tamanho) // NAO FUNCIONA HAHA!
 
-      for (int numeroBloco = 0; numeroBloco < 2500; numeroBloco++){
-        // chama e percorre a lista de blocos
-        if (blocolistaDeBlocos[numeroBloco].tamanho >= processoAtual.tamanho){
-          blocoQueCabeOProcesso = blocoAtual;
-          alocou = 1;
-          break;
-        }
-      }
+  //     for (int numeroBloco = 0; numeroBloco < 2500; numeroBloco++){
+  //       // chama e percorre a lista de blocos
+  //       if (blocolistaDeBlocos[numeroBloco].tamanho >= processoAtual.tamanho){
+  //         blocoQueCabeOProcesso = blocoAtual;
+  //         alocou = 1;
+  //         break;
+  //       }
+  //     }
       
-      if (alocou == 1){
-        escreveProcesso(processoAtual, blocoQueCabeOProcesso);
-      }
-	}	
+  //     if (alocou == 1){
+  //       escreveProcesso(processoAtual, blocoQueCabeOProcesso);
+  //     }
+	// }	
 };
 
 void alocarProcesso(){
@@ -256,7 +259,7 @@ void alocarProcesso(){
 
   //seleciona o próximo processo para alocar
 	for (int indice = 0; indice < nProc ; indice++){ 
-    if (listaProcessos[indice].alocado = 0 && listaProcessos[indice].tempoRest != 0){
+    if (listaProcessos[indice].alocado == 0 && listaProcessos[indice].tempoRest != 0){
       proximoProcessoParaAlocar = listaProcessos[indice];
       processoSelecionado = 1;
       break;
@@ -265,16 +268,19 @@ void alocarProcesso(){
 
   if (processoSelecionado == 1){
     // seleciona algoritmo a ser executado
-    switch (resolveOp(comando)) {			
+    switch (opcao) {			
       case Op1: // first-fit
         firstFit(proximoProcessoParaAlocar);
         break;
       case Op2: // circular-fit TODO
         break;
       case Op3: // best-fit
-        bestFit(proximoProcessoParaAlocar)
+        bestFit(proximoProcessoParaAlocar);
         break;
       case Op4: // worst-fit TODO
+        break;
+      default:
+        cout << "Comando nao encontrado!" "!\n";
         break;
       }						
   }
@@ -336,7 +342,7 @@ void imprimeCiclo(){
 
 int existemProcessosPendentes(){
   for (int i = 0; i > nProc; i++){
-    if (listaProcessos[i].alocado == 1 || && listaProcessos[i].tempoRest != 0){
+    if (listaProcessos[i].alocado == 1 || listaProcessos[i].tempoRest != 0){
       return 1;
     }
   }
@@ -359,7 +365,7 @@ int main(int argc, char *argv[ ]) {
 	
 	// trata argumentos passados via linha de comando
 	string comando = argv[1];
-	resolveOp(comando);	
+	opcao = resolveOpresolveOp(comando);	
 	nProc = atoi(argv[2]);
 	// arumento tempo opcional
 	if (argv[3] != NULL) tempo = atoi(argv[3]);	
