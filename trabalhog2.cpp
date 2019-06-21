@@ -217,54 +217,40 @@ void circularFit() {
 	//Bloco *blocos = construtorBloco();
 };
 
-void atualizaProcessos(){
-
+void alocarProcesso(){
 	// seleciona algoritmo a ser executado
 	switch (resolveOp(comando)) {			
-		// first-fit
-    case Op1: 
+    case Op1: // first-fit
 			firstFit(processo);
 			break;
-		// circular-fit
-		case Op2:
-			
-			exibeVetor();
-			circularFit();
-
+		case Op2: // circular-fit TODO
 			break;
-			
-		// best-fit
-		case Op3:
-
+		case Op3: // best-fit TODO
 			break;
-				
-		// worst-fit
-		case Op4:
-
+		case Op4: // worst-fit TODO
 			break;		
-				
-		// comando não encontrado
 		default:
 			cout << "Argumentos inválidos!" "!\n";
 		}						
-	return 0;
 };
 
-void imprimeCiclo(){
-  
+void atualizaProcessos(){
 
+  descontarTempoDosProcessoEmAndamento(); //TODO
+  removerProcessosFinalizadosDaMatriz(); //TODO
 
-			// chama legenda para os n processos criados
-			tituloLegenda();
-			legenda(nProc, processo);
+  if (deveAlocarProcesso()){ //TODO
+    alocarProcesso();
+  }
+};
 
-			exibeVetor();
-		
+void imprimeCiclo(){ //TODO
+  // chama legenda para os n processos criados
+  tituloLegenda();
+  legenda(nProc, processo);
 
+  exibeVetor();
 }
-
-
-
 
 // inicio
 int main(int argc, char *argv[ ]) {
@@ -284,15 +270,15 @@ int main(int argc, char *argv[ ]) {
 	// inicializa vetor
 	criaVetor();		
 
-  while(existemProcessosPendentes()){
+  while(existemProcessosPendentes()){ //TODO
     atualizaProcessos();
-    imprimeCiclo();
+    imprimeCiclo(); //TODO
 
-    espera();
+    espera(); //TODO
   }
 
-  imprimeRelatorioCompleto();
+  imprimeRelatorioCompleto(); //TODO
 
-
+  return 0;
 
 };
