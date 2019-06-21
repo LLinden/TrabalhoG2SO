@@ -158,6 +158,7 @@ void escreveProcesso(Processo processo, Bloco bloco){
 	
 	for (int i = bloco.inicio; i < processo.tamanho; i++){
 		vetor[i] = processo.simbolo;	
+		
 	}
 };
 
@@ -188,7 +189,7 @@ void firstFit(Processo *processo) {
 		
 		for (int numeroBloco = 0; numeroBloco < 2500; numeroBloco++){
 			Bloco blocoAtual = blocos[numeroBloco];
-			if (blocoAtual.tamanho <= processoAtual.tamanho){
+			if (blocoAtual.tamanho >= processoAtual.tamanho){
 				blocoQueCabeOProcesso = blocoAtual;
 				alocou = 1;
 				break;
@@ -196,6 +197,20 @@ void firstFit(Processo *processo) {
 		}
 		
 		if (alocou == 1){
+			printf("\n\nid: ");
+			cout << blocoQueCabeOProcesso.id << "\n";
+			printf("tamanho: ");
+			cout << blocoQueCabeOProcesso.tamanho << "\n";
+			printf("inicio: ");
+			cout << blocoQueCabeOProcesso.inicio << "\n";
+			printf("fim: ");
+			cout << blocoQueCabeOProcesso.fim << "\n\n";
+			cout << "-----------------------------------\n";
+			printf("\n\nProcid: ");
+			cout << processoAtual.pid << "\n";
+			printf("Proctamanho: ");
+			cout << processoAtual.tamanho << "\n";
+			cout << "-----------------------------------\n";
 			escreveProcesso(processoAtual, blocoQueCabeOProcesso);
 		}
 	}	
