@@ -26,6 +26,7 @@ class Processo {
 		int tempoExec;
 		char simbolo;
 		int tempoRest;
+    int alocado = 0; //0 = false, 1 = true
 };
 
 // modelo do objeto Bloco
@@ -160,10 +161,7 @@ void escreveProcesso(Processo processo, Bloco bloco){
 };
 
 // first-fit
-void firstFit(Processo *processo) {
-	for (int numeroProcesso = 0; numeroProcesso < nProc ; numeroProcesso++){ 
-		Processo processoAtual = processo[numeroProcesso];
-
+void firstFit(Processo processo) {
 		int alocou = 0;
 		Bloco blocoQueCabeOProcesso;
 		
@@ -171,7 +169,7 @@ void firstFit(Processo *processo) {
 		
 		for (int numeroBloco = 0; numeroBloco < 2500; numeroBloco++){
 			Bloco blocoAtual = blocos[numeroBloco];
-			if (blocoAtual.tamanho >= processoAtual.tamanho){
+			if (blocoAtual.tamanho >= processo.tamanho){
 				blocoQueCabeOProcesso = blocoAtual;
 				alocou = 1;
 				break;
@@ -179,7 +177,7 @@ void firstFit(Processo *processo) {
 		}
 		
 		if (alocou == 1){
-			escreveProcesso(processoAtual, blocoQueCabeOProcesso);
+			escreveProcesso(processo, blocoQueCabeOProcesso);
 		}
 	}	
 			
@@ -212,12 +210,56 @@ void firstFit(Processo *processo) {
 	// }
 };
 
-// circular-fit
-void circularFit() {
-	//Bloco *blocos = construtorBloco();
+// best-fit
+void bestFit(Processo processo) {
+
+      int alocou = 0;
+
+      Bloco blocoQueCabeOProcesso;
+      
+      Bloco *blocos = construtorBloco();
+
+      // lista de blocos ???
+      list<Bloco> listaDeBlocos;
+      
+      for (int numeroBloco = 0; numeroBloco < 2500; numeroBloco++){
+        Bloco blocoAtual = blocos[numeroBloco];
+        if (blocoAtual.tamanho >= processoAtual.tamanho){
+          // lista guarda bloco TODO
+          // Joe Macaroni
+          listaDeBlocos.push_back(blocoAtual);
+        }
+      }
+      
+      listaDeBlocos.sort()
+
+      for (int numeroBloco = 0; numeroBloco < 2500; numeroBloco++){
+        // chama e percorre a lista de blocos
+        if (blocolistaDeBlocos[numeroBloco].tamanho >= processoAtual.tamanho){
+          blocoQueCabeOProcesso = blocoAtual;
+          alocou = 1;
+          break;
+        }
+      }
+      
+      if (alocou == 1){
+        escreveProcesso(processoAtual, blocoQueCabeOProcesso);
+      }
+	}	
 };
 
 void alocarProcesso(){
+  //seleciona o próximo processo para alocar
+
+  Processo proximoProcessoParaAlocar;
+
+	for (int numeroProcesso = 0; numeroProcesso < nProc ; numeroProcesso++){ 
+    if (processo[numeroProcesso])
+
+
+		Processo processoAtual = processo[numeroProcesso];
+  }
+
 	// seleciona algoritmo a ser executado
 	switch (resolveOp(comando)) {			
     case Op1: // first-fit
@@ -225,7 +267,8 @@ void alocarProcesso(){
 			break;
 		case Op2: // circular-fit TODO
 			break;
-		case Op3: // best-fit TODO
+		case Op3: // best-fit
+      bestFit(processo)
 			break;
 		case Op4: // worst-fit TODO
 			break;		
