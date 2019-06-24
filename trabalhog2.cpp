@@ -167,6 +167,7 @@ void escreveProcesso(int indexProcesso, Bloco bloco){
 
 };
 
+// first-fit
 void firstFit(int indexProcesso) {
   int encontrouBlocoParaAlocar = 0;
   Bloco blocoQueCabeOProcesso;
@@ -268,7 +269,6 @@ void circularFit(int indexProcesso) {
 
 // aloca processos
 void alocarProcesso(){
-
   int indiceProcessoSelecionado = -1;
 
   //seleciona o próximo processo para alocar
