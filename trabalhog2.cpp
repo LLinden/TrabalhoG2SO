@@ -27,8 +27,8 @@ class Processo {
 		int tempoExec;
 		char simbolo;
 		int tempoRest;
-    int alocado;
-    int tempoEmFila;
+		int alocado;
+		int tempoEmFila;
 };
 
 Processo *listaProcessos;
@@ -63,6 +63,7 @@ Opcoes resolveOp(string comando) {
 	return Op_Invalida;
 }
 
+// legando dos processos
 void imprimeProcesso(int indice){
   
   cout << "PID: " << listaProcessos[indice].pid << ", ";
@@ -208,7 +209,7 @@ void bestFit(int indexProcesso) {
   }
 };
 
-// worstFit
+// worst-fit
 void worstFit(int indexProcesso) {
   int encontrouBlocoParaAlocar = 0;
   Bloco blocoMaiorTamanho;
@@ -231,8 +232,7 @@ void worstFit(int indexProcesso) {
   }
 };
 
-
-// circularFit
+// circular-fit
 void circularFit(int indexProcesso) {
   int encontrouBlocoParaAlocar = 0;
   Bloco blocoTamanhoSuficiente;
@@ -265,7 +265,7 @@ void circularFit(int indexProcesso) {
   }
 };
 
-
+// aloca processos
 void alocarProcesso(){
 
   int indiceProcessoSelecionado = -1;
@@ -284,13 +284,13 @@ void alocarProcesso(){
       case Op1: // first-fit
         firstFit(indiceProcessoSelecionado);
         break;
-      case Op2: // circular-fit TODO
+      case Op2: // circular-fit 
         circularFit(indiceProcessoSelecionado);
         break;
       case Op3: // best-fit
         bestFit(indiceProcessoSelecionado);
         break;
-      case Op4: // worst-fit TODO
+      case Op4: // worst-fit 
         worstFit(indiceProcessoSelecionado);
         break;
       default:
@@ -300,6 +300,7 @@ void alocarProcesso(){
   }
 };
 
+// chance de gerar processo
 int deveAlocarProcesso(){
   int numeroGerado = rand() % 100 + 1;
 
@@ -310,6 +311,7 @@ int deveAlocarProcesso(){
   }
 };
 
+// cronometro
 void descontarTempoDosProcessoEmAndamento(){
   for (int i = 0; i < nProc; i++){
     if (listaProcessos[i].alocado == 1){
@@ -318,6 +320,7 @@ void descontarTempoDosProcessoEmAndamento(){
   }
 };
 
+// remove os processos concluidos
 void removerProcessosFinalizadosDaMatriz(){
   for (int i = 0; i < nProc; i++){
     if (listaProcessos[i].alocado == 1 && listaProcessos[i].tempoRest == 0){ //deve remover      
@@ -332,6 +335,7 @@ void removerProcessosFinalizadosDaMatriz(){
 
 }
 
+// atuaaliza informacoes
 void atualizarInformacoesParaRelatorio(){
 	for (int i = 0; i < TAMANHO; i++) {
 		if (vetor[i] != '.') {
@@ -346,6 +350,7 @@ void atualizarInformacoesParaRelatorio(){
   }
 }
 
+// atualiza processo
 void atualizaProcessos(){
   contadorCiclos++;
 
@@ -356,18 +361,18 @@ void atualizaProcessos(){
     alocarProcesso();
   }
 
-  atualizarInformacoesParaRelatorio(); //TODO
+  atualizarInformacoesParaRelatorio();
 };
 
+// exibe processos
 void imprimeCiclo(){
   // chama legenda para os n processos criados
   legenda();
   exibeVetor();
 }
 
+// verifica  processos pendentes
 int existemProcessosPendentes(){
-
-
   for (int i = 0; i < nProc; i++){
     if (listaProcessos[i].alocado == 1 || listaProcessos[i].tempoRest != 0){
       return 1;
@@ -376,13 +381,15 @@ int existemProcessosPendentes(){
   return 0;
 }
 
+// tempo de espera definido pelo usuario
 void espera(){
   if (tempo > 0){
-    sleep(tempo); //verifica se isso está correto
+    sleep(tempo);
   }
 }
 
-void imprimeRelatorioCompleto(){ //TODO
+// impressao relatorio
+void imprimeRelatorioCompleto(){ 
   cout << "\n\nRelatorio completo:\n";
 
   int mediaOcupada = memoriaOcupada * 100 /  (TAMANHO * contadorCiclos);
