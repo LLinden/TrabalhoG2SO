@@ -1,6 +1,7 @@
 /******************************************************************************
 Trabalho G2 - Sistemas Operacionais
 Author: Lucas Linden - Cod. 1110139
+ ./main first-fit 5 0
 *******************************************************************************/
 #include <iostream>
 #include <string>
@@ -13,7 +14,7 @@ using namespace std;
 // constantes
 const int TAMANHO = 5000;
 // variaveis globais
-int nProc, tempo = 0, count = 0, cron = 1;
+int nProc, tempo = 1, contadorCiclos = 0, memoriaOcupada = 0, ultimoIndiceEscrito = 0;
 char vetor[TAMANHO];
 char dicionario[] = {'A','B','C','D','E','F','G','H','I','J','K','L','M',
 					'N','O','P','Q','R','S','T','U','V','X','Y','W','Z'};
@@ -26,7 +27,8 @@ class Processo {
 		int tempoExec;
 		char simbolo;
 		int tempoRest;
-    int alocado = 0; //0 = false, 1 = true
+    int alocado;
+    int tempoEmFila;
 };
 
 Processo *listaProcessos;
@@ -61,6 +63,17 @@ Opcoes resolveOp(string comando) {
 	return Op_Invalida;
 }
 
+void imprimeProcesso(int indice){
+  
+  cout << "PID: " << listaProcessos[indice].pid << ", ";
+  cout << "Simbolo: " << listaProcessos[indice].simbolo << ", ";
+  cout << "Tamanho: " << listaProcessos[indice].tamanho << ", ";
+  cout << "T. Execucao: " << listaProcessos[indice].tempoExec << ", ";
+  cout << "T. Restante: " << listaProcessos[indice].tempoRest << ", ";
+  cout << "Alocado: " << listaProcessos[indice].alocado << "\n";
+};
+
+
 // cria vetor principal
 void criaVetor(){
 	int i;
@@ -83,16 +96,13 @@ void exibeVetor(){
 		cout << endl;	
 };
 
-// cabecalho tabela legenda
-void tituloLegenda() {
-	cout << "\nPID\t\tSIMBOLO\t\tTAMANHO\t\tTEMP.EXEC.\tTEMP.REST.\n";
-};
-
 // tabela legenda com a descricao dos processos criados
-void legenda(int nProc, Processo *processo) {
+void legenda() {
+
+  cout << "\n\n\n\n";
+
 	for(int i = 0; i < nProc; i++) {
-		cout << processo[i].pid << "\t\t" << processo[i].simbolo << "\t\t" << processo[i].tamanho 
-		<< "\t\t" << processo[i].tempoExec << "\t\t" << processo[i].tempoRest << "\n";
+    imprimeProcesso(i);
 	}
 };
 
@@ -101,12 +111,13 @@ Processo* construtorProc() {
 	Processo *processo = new Processo[nProc];
 	// instancia n processos (quantidade definida em nProc)
 	for(int i = 0; i < nProc; i++) {	
-		 count = count + 1;
-		 processo[i].pid = count;
+		 processo[i].pid = i;
 		 processo[i].tamanho = rand() % 900 + 100;
 		 processo[i].tempoExec = rand() % 300 + 1;
 		 processo[i].simbolo = dicionario[i];
 		 processo[i].tempoRest = processo[i].tempoExec;
+     processo[i].alocado = 0;
+     processo[i].tempoEmFila = 0;
 	}
 	return processo;	
 };
@@ -145,27 +156,16 @@ Bloco* construtorBloco() {
 };
 
 // escreve processos dentro do bloco e no vetor
-void escreveProcesso(Processo processo, Bloco bloco){
-
-	printf("escrevendo processo no bloco\n");
-  cout << "dados bloco: \n";
-	cout << "blocoInicio: " << bloco.inicio << "\n";
-  cout << "blocofim: " << bloco.fim << "\n";
-  cout << "blocotamanho:" << bloco.tamanho << "\n";  
-
-  cout << "\n\n\ndados processo: \n";
-	cout << "processotamanho: " << processo.tamanho << "\n";
-	cout << "processosimbolo: " << processo.simbolo << "\n";
-
-	
-	for (int i = bloco.inicio; i < bloco.inicio + processo.tamanho; i++){
-		vetor[i] = processo.simbolo;	
+void escreveProcesso(int indexProcesso, Bloco bloco){
+	for (int i = bloco.inicio; i < bloco.inicio + listaProcessos[indexProcesso].tamanho; i++){
+		vetor[i] = listaProcessos[indexProcesso].simbolo;	
 	}
-  processo.alocado = 1;
+
+  listaProcessos[indexProcesso].alocado = 1;
+
 };
 
-// first-fit
-void firstFit(Processo processo) {
+void firstFit(int indexProcesso) {
   int encontrouBlocoParaAlocar = 0;
   Bloco blocoQueCabeOProcesso;
   
@@ -173,7 +173,7 @@ void firstFit(Processo processo) {
   
   for (int numeroBloco = 0; numeroBloco < 2500; numeroBloco++){
     Bloco blocoAtual = blocos[numeroBloco];
-    if (blocoAtual.tamanho >= processo.tamanho){
+    if (blocoAtual.tamanho >= listaProcessos[indexProcesso].tamanho){
       blocoQueCabeOProcesso = blocoAtual;
       encontrouBlocoParaAlocar = 1;
       break;
@@ -181,103 +181,117 @@ void firstFit(Processo processo) {
   }
   
   if (encontrouBlocoParaAlocar == 1){
-    escreveProcesso(processo, blocoQueCabeOProcesso);
+    escreveProcesso(indexProcesso, blocoQueCabeOProcesso);
   }
 };	
 			
-	//system("clear");
-	//exibeVetor();
-	
-	// // calcula tempo total
-	// for (int i = 0; i < nProc ; i++){
-	// 	if (processo[i].tempoExec > cron) {
-	// 		cron = processo[i].tempoExec;
-	// 	}
-	// }			
-			
-	// // gerencia de tempo de execucao
-	// while (cron > 0) {
-	// 	for (int i = 0; i < nProc; i++) {
-	// 		if (processo[i].tempoRest > 0) {
-	// 			int tmp = processo[i].tempoRest - 1;
-	// 				processo[i].tempoRest = tmp;
-	// 		}						
-	// 	}
-	// 	// chama legenda para os n processos criados
-	// 	exibeVetor();
-	// 	tituloLegenda();
-	// 	legenda(nProc, processo);
-	// 	cron = cron - 1;
-	// 	cout << "\nTEMPO TOTAL RESANTE: " << cron << "\n";
-	// 	cout << flush;
-	// 	sleep(1);
-	// }
-
-
 // best-fit
-void bestFit(Processo processo) {
+void bestFit(int indexProcesso) {
+  int encontrouBlocoParaAlocar = 0;
+  Bloco blocoMenorTamanho;
+  
+  Bloco *blocos = construtorBloco();
+  
+  int menorTamanhoEncontrado = TAMANHO;
 
-  //     int alocou = 0;
-
-  //     Bloco blocoQueCabeOProcesso;
-      
-  //     Bloco *blocos = construtorBloco();
-
-  //     // lista de blocos ???
-  //     list<Bloco> listaDeBlocos;
-      
-  //     for (int numeroBloco = 0; numeroBloco < 2500; numeroBloco++){
-  //       Bloco blocoAtual = blocos[numeroBloco];
-  //       if (blocoAtual.tamanho >= processoAtual.tamanho){
-  //         // lista guarda bloco TODO
-  //         // Joe Macaroni
-  //         listaDeBlocos.push_back(blocoAtual);
-  //       }
-  //     }
-      
-  //     listaDeBlocos.sort(tamanho) // NAO FUNCIONA HAHA!
-
-  //     for (int numeroBloco = 0; numeroBloco < 2500; numeroBloco++){
-  //       // chama e percorre a lista de blocos
-  //       if (blocolistaDeBlocos[numeroBloco].tamanho >= processoAtual.tamanho){
-  //         blocoQueCabeOProcesso = blocoAtual;
-  //         alocou = 1;
-  //         break;
-  //       }
-  //     }
-      
-  //     if (alocou == 1){
-  //       escreveProcesso(processoAtual, blocoQueCabeOProcesso);
-  //     }
-	// }	
+  for (int numeroBloco = 0; numeroBloco < 2500; numeroBloco++){
+    Bloco blocoAtual = blocos[numeroBloco];
+    if (blocoAtual.tamanho >= listaProcessos[indexProcesso].tamanho && blocoAtual.tamanho < menorTamanhoEncontrado ){
+      blocoMenorTamanho = blocoAtual;
+      encontrouBlocoParaAlocar = 1;
+      break;
+    }
+  }
+  
+  if (encontrouBlocoParaAlocar == 1){
+    escreveProcesso(indexProcesso, blocoMenorTamanho);
+  }
 };
 
-void alocarProcesso(){
+// worstFit
+void worstFit(int indexProcesso) {
+  int encontrouBlocoParaAlocar = 0;
+  Bloco blocoMaiorTamanho;
+  
+  Bloco *blocos = construtorBloco();
+  
+  int maiorTamanhoEncontrado = 0;
 
-  Processo proximoProcessoParaAlocar;
-  int processoSelecionado = 0;
+  for (int numeroBloco = 0; numeroBloco < 2500; numeroBloco++){
+    Bloco blocoAtual = blocos[numeroBloco];
+    if (blocoAtual.tamanho >= listaProcessos[indexProcesso].tamanho && blocoAtual.tamanho > maiorTamanhoEncontrado ){
+      blocoMaiorTamanho = blocoAtual;
+      encontrouBlocoParaAlocar = 1;
+      break;
+    }
+  }
+  
+  if (encontrouBlocoParaAlocar == 1){
+    escreveProcesso(indexProcesso, blocoMaiorTamanho);
+  }
+};
 
-  //seleciona o próximo processo para alocar
-	for (int indice = 0; indice < nProc ; indice++){ 
-    if (listaProcessos[indice].alocado == 0 && listaProcessos[indice].tempoRest != 0){
-      proximoProcessoParaAlocar = listaProcessos[indice];
-      processoSelecionado = 1;
+
+// circularFit
+void circularFit(int indexProcesso) {
+  int encontrouBlocoParaAlocar = 0;
+  Bloco blocoTamanhoSuficiente;
+  
+  Bloco *blocos = construtorBloco();
+  
+  for (int numeroBloco = 0; numeroBloco < 2500; numeroBloco++){
+    Bloco blocoAtual = blocos[numeroBloco];
+    if (blocoAtual.tamanho >= listaProcessos[indexProcesso].tamanho && blocoAtual.inicio >= ultimoIndiceEscrito ){
+      blocoTamanhoSuficiente = blocoAtual;
+      encontrouBlocoParaAlocar = 1;
       break;
     }
   }
 
-  if (processoSelecionado == 1){
+  if (encontrouBlocoParaAlocar == 0){
+    for (int numeroBloco = 0; numeroBloco < 2500; numeroBloco++){
+      Bloco blocoAtual = blocos[numeroBloco];
+      if (blocoAtual.tamanho >= listaProcessos[indexProcesso].tamanho){
+        blocoTamanhoSuficiente = blocoAtual;
+        encontrouBlocoParaAlocar = 1;
+        break;
+      }
+    }
+  }
+  
+  if (encontrouBlocoParaAlocar == 1){
+    ultimoIndiceEscrito = blocoTamanhoSuficiente.inicio + listaProcessos[indexProcesso].tamanho;
+    escreveProcesso(indexProcesso, blocoTamanhoSuficiente);
+  }
+};
+
+
+void alocarProcesso(){
+
+  int indiceProcessoSelecionado = -1;
+
+  //seleciona o próximo processo para alocar
+	for (int indice = 0; indice < nProc ; indice++){ 
+    if (listaProcessos[indice].alocado == 0 && listaProcessos[indice].tempoRest != 0){
+      indiceProcessoSelecionado = indice;
+      break;
+    }
+  }
+
+  if (indiceProcessoSelecionado > -1){
     // seleciona algoritmo a ser executado
     switch (opcao) {			
       case Op1: // first-fit
-        firstFit(proximoProcessoParaAlocar);
+        firstFit(indiceProcessoSelecionado);
         break;
       case Op2: // circular-fit TODO
+        circularFit(indiceProcessoSelecionado);
         break;
       case Op3: // best-fit
-        bestFit(proximoProcessoParaAlocar);
+        bestFit(indiceProcessoSelecionado);
         break;
       case Op4: // worst-fit TODO
+        worstFit(indiceProcessoSelecionado);
         break;
       default:
         cout << "Comando nao encontrado!" "!\n";
@@ -297,7 +311,7 @@ int deveAlocarProcesso(){
 };
 
 void descontarTempoDosProcessoEmAndamento(){
-  for (int i = 0; i > nProc; i++){
+  for (int i = 0; i < nProc; i++){
     if (listaProcessos[i].alocado == 1){
       listaProcessos[i].tempoRest = listaProcessos[i].tempoRest - 1;
     }
@@ -305,23 +319,35 @@ void descontarTempoDosProcessoEmAndamento(){
 };
 
 void removerProcessosFinalizadosDaMatriz(){
-  for (int i = 0; i > nProc; i++){
+  for (int i = 0; i < nProc; i++){
     if (listaProcessos[i].alocado == 1 && listaProcessos[i].tempoRest == 0){ //deve remover      
       for (int j = 0; j < TAMANHO; j++) { //percorre matriz
         if (vetor[j] == listaProcessos[i].simbolo) {
           vetor[j] = '.'; //remove
         }
       }
+      listaProcessos[i].alocado = 0;
     }
   }
 
 }
 
 void atualizarInformacoesParaRelatorio(){
-  //TODO
+	for (int i = 0; i < TAMANHO; i++) {
+		if (vetor[i] != '.') {
+      memoriaOcupada++;
+		}
+	}
+
+  for (int i = 0; i < nProc; i++){
+    if (listaProcessos[i].alocado == 0 && listaProcessos[i].tempoRest != 0){
+      listaProcessos[i].tempoEmFila++;
+    }
+  }
 }
 
 void atualizaProcessos(){
+  contadorCiclos++;
 
   descontarTempoDosProcessoEmAndamento();
   removerProcessosFinalizadosDaMatriz();
@@ -335,13 +361,14 @@ void atualizaProcessos(){
 
 void imprimeCiclo(){
   // chama legenda para os n processos criados
-  tituloLegenda();
-  legenda(nProc, processo);
+  legenda();
   exibeVetor();
 }
 
 int existemProcessosPendentes(){
-  for (int i = 0; i > nProc; i++){
+
+
+  for (int i = 0; i < nProc; i++){
     if (listaProcessos[i].alocado == 1 || listaProcessos[i].tempoRest != 0){
       return 1;
     }
@@ -350,10 +377,29 @@ int existemProcessosPendentes(){
 }
 
 void espera(){
-  sleep(tempo); //verifica se isso está correto
+  if (tempo > 0){
+    sleep(tempo); //verifica se isso está correto
+  }
 }
 
 void imprimeRelatorioCompleto(){ //TODO
+  cout << "\n\nRelatorio completo:\n";
+
+  int mediaOcupada = memoriaOcupada * 100 /  (TAMANHO * contadorCiclos);
+  int mediaLivre = 100 - mediaOcupada;
+
+  int totalCiclosAguardando = 0;
+  
+  for (int i = 0; i < nProc; i++){
+    totalCiclosAguardando += listaProcessos[i].tempoEmFila;
+  }
+
+  int mediaCiclosAguardados = totalCiclosAguardando / contadorCiclos;
+
+  cout << "media de memoria ocupada por ciclo: " << mediaOcupada << "%;\n";
+  cout << "media de memoria livre por ciclo: " << mediaLivre << "%;\n";
+  cout << "processos criados: " << nProc << ";\n";
+  cout << "media de ciclos aguardados ate alocar: " << mediaCiclosAguardados << ".\n";
 
 }
 
@@ -365,7 +411,7 @@ int main(int argc, char *argv[ ]) {
 	
 	// trata argumentos passados via linha de comando
 	string comando = argv[1];
-	opcao = resolveOpresolveOp(comando);	
+	opcao = resolveOp(comando);	
 	nProc = atoi(argv[2]);
 	// arumento tempo opcional
 	if (argv[3] != NULL) tempo = atoi(argv[3]);	
@@ -382,7 +428,7 @@ int main(int argc, char *argv[ ]) {
     espera();
   }
 
-  imprimeRelatorioCompleto(); //TODO
+  imprimeRelatorioCompleto();
 
   return 0;
 
