@@ -103,7 +103,7 @@ void legenda() {
 	cout << "\n\n\n\n";
 
 	for(int i = 0; i < nProc; i++) {
-    imprimeProcesso(i);
+		imprimeProcesso(i);
 	}
 };
 
