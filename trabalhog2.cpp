@@ -112,13 +112,13 @@ Processo* construtorProc() {
 	Processo *processo = new Processo[nProc];
 	// instancia n processos (quantidade definida em nProc)
 	for(int i = 0; i < nProc; i++) {	
-		 processo[i].pid = i;
-		 processo[i].tamanho = rand() % 900 + 100;
-		 processo[i].tempoExec = rand() % 300 + 1;
-		 processo[i].simbolo = dicionario[i];
-		 processo[i].tempoRest = processo[i].tempoExec;
-     processo[i].alocado = 0;
-     processo[i].tempoEmFila = 0;
+		processo[i].pid = i;
+		processo[i].tamanho = rand() % 900 + 100;
+		processo[i].tempoExec = rand() % 300 + 1;
+		processo[i].simbolo = dicionario[i];
+		processo[i].tempoRest = processo[i].tempoExec;
+		processo[i].alocado = 0;
+		processo[i].tempoEmFila = 0;
 	}
 	return processo;	
 };
