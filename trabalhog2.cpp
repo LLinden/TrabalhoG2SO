@@ -1,7 +1,6 @@
 /******************************************************************************
 Trabalho G2 - Sistemas Operacionais
 Author: Lucas Linden - Cod. 1110139
- ./main first-fit 5 0
 *******************************************************************************/
 #include <iostream>
 #include <string>
