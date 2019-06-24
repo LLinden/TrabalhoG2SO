@@ -65,8 +65,7 @@ Opcoes resolveOp(string comando) {
 }
 
 // legando dos processos
-void imprimeProcesso(int indice){
-  
+void imprimeProcesso(int indice){  
   cout << "PID: " << listaProcessos[indice].pid << ", ";
   cout << "Simbolo: " << listaProcessos[indice].simbolo << ", ";
   cout << "Tamanho: " << listaProcessos[indice].tamanho << ", ";
@@ -101,7 +100,7 @@ void exibeVetor(){
 // tabela legenda com a descricao dos processos criados
 void legenda() {
 
-  cout << "\n\n\n\n";
+	cout << "\n\n\n\n";
 
 	for(int i = 0; i < nProc; i++) {
     imprimeProcesso(i);
